@@ -86,22 +86,7 @@ require 'lualine'.setup {
 	}
 }
 require 'options'
-
--- General Keymaps
-vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
-vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true })
-vim.keymap.set('n', '<c-h>', ':wincmd h<CR>', { noremap = true })
-vim.keymap.set('n', '<c-j>', ':wincmd j<CR>', { noremap = true })
-vim.keymap.set('n', '<c-k>', ':wincmd k<CR>', { noremap = true })
-vim.keymap.set('n', '<c-l>', ':wincmd l<CR>', { noremap = true })
-vim.keymap.set('n', '<Leader><Tab>', ':Telescope buffers<CR>', { noremap = true })
--- toggle uppercase
-vim.keymap.set('n', '<Leader>uu', 'g~iw', { noremap = true })
-vim.keymap.set('n', '<Leader>.', '10<C-w>>', { noremap = true })
-vim.keymap.set('n', '<Leader>,', '10<C-w><', { noremap = true })
-
--- Auto comment
-vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
+require 'keymaps'
 
 -- Indent
 vim.opt.list = true
@@ -123,9 +108,6 @@ vim.diagnostic.config({
 	}
 })
 
--- Tree explorer
-vim.keymap.set('n', '<C-N>', ':Lexplore<CR> :vertical <CR>', { noremap = true })
-
 -- Setup lspconfig
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -134,11 +116,6 @@ local handlers = {
 	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
 	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
 }
-
--- Mappings.
-local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<space>q', ':q<CR>', { noremap = true })
-vim.keymap.set('n', '<space>w', ':w<CR>', { noremap = true })
 
 -- Formatting
 local lsp_formatting = function(bufnr)
@@ -167,19 +144,21 @@ local on_attach = function(client, bufnr)
 		})
 	end
 
+	local opts = { noremap = true, silent = true }
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>k', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>]', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>k', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>]', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rf', '<cmd>lua require"telescope.builtin".lsp_references({layout_strategy = "horizontal" })<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rf',
+		'<cmd>lua require"telescope.builtin".lsp_references({layout_strategy = "horizontal" })<CR>', opts)
 end
 
 -- Null lsp
@@ -193,7 +172,6 @@ require("null-ls").setup({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		require 'null-ls'.builtins.diagnostics.angularls,
 		require("null-ls").builtins.formatting.gofmt,
 		require("null-ls").builtins.formatting.fixjson,
 	},
@@ -217,7 +195,7 @@ local servers = {
 					version = 'LuaJit',
 				},
 				diagnostics = {
-					globals = 'vim',
+					globals = { 'vim' },
 				},
 				workspace = {
 					library = vim.api.nvim_get_runtime_file("", true),
@@ -277,17 +255,15 @@ require('gitsigns').setup {
 		end, { expr = true })
 
 		-- Actions
-		map({ 'n', 'v' }, '<space>hs', ':Gitsigns stage_hunk<CR>')
-		map({ 'n', 'v' }, '<space>hr', ':Gitsigns reset_hunk<CR>')
-		map('n', '<space>hS', gs.stage_buffer)
-		map('n', '<space>hu', gs.undo_stage_hunk)
-		map('n', '<space>hR', gs.reset_buffer)
-		map('n', '<space>hp', gs.preview_hunk)
-		map('n', '<space>hb', function() gs.blame_line { full = true } end)
-		map('n', '<space>tb', gs.toggle_current_line_blame)
-		map('n', '<space>hd', gs.diffthis)
-		map('n', '<space>hD', function() gs.diffthis('~') end)
-		map('n', '<space>td', gs.toggle_deleted)
+		map({ 'n', 'v' }, '<Leader>hs', ':Gitsigns stage_hunk<CR>')
+		map({ 'n', 'v' }, '<Leader>hr', ':Gitsigns reset_hunk<CR>')
+		map('n', '<Leader>hS', gs.stage_buffer)
+		map('n', '<Leader>hu', gs.undo_stage_hunk)
+		map('n', '<Leader>hR', gs.reset_buffer)
+		map('n', '<Leader>hp', gs.preview_hunk)
+		map('n', '<Leader>hd', gs.diffthis)
+		map('n', '<Leader>hD', function() gs.diffthis('~') end)
+		map('n', '<Leader>td', gs.toggle_deleted)
 
 		-- Text object
 		map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
@@ -340,15 +316,13 @@ require 'telescope'.setup {
 	},
 	mappings = {
 		i = {
-			["<space>q"] = require 'telescope.actions'.close
+			["<Leader>q"] = require 'telescope.actions'.close
 		},
 		n = {
 			["<space>q"] = require 'telescope.actions'.close
 		}
 	}
 }
-vim.keymap.set('n', '<space>ff', ':Telescope find_files <CR>', { noremap = true })
-vim.keymap.set('n', '<Space>fg', ':Telescope live_grep <CR>', { noremap = true })
 
 -- Signs
 local signs = {
