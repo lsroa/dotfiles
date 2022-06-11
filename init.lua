@@ -162,18 +162,21 @@ local on_attach = function(client, bufnr)
 end
 
 -- Null lsp
-require("null-ls").setup({
+local nulls = require 'null-ls'
+
+nulls.setup({
 	sources = {
-		require("null-ls").builtins.formatting.eslint.with({
+		nulls.builtins.formatting.eslint.with({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		require("null-ls").builtins.diagnostics.eslint.with({
+		nulls.builtins.diagnostics.eslint.with({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		require("null-ls").builtins.formatting.gofmt,
-		require("null-ls").builtins.formatting.fixjson,
+		nulls.builtins.formatting.gofmt,
+		nulls.builtins.formatting.fixjson,
+		nulls.builtins.code_actions.gitsigns,
 	},
 	on_attach = on_attach,
 	-- This set the root_dir to the current dir
@@ -319,7 +322,7 @@ require 'telescope'.setup {
 			["<Leader>q"] = require 'telescope.actions'.close
 		},
 		n = {
-			["<space>q"] = require 'telescope.actions'.close
+			["<Leader>q"] = require 'telescope.actions'.close
 		}
 	}
 }
