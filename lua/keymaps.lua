@@ -14,7 +14,7 @@ vim.keymap.set('n', '<Leader>,', '10<C-w><', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
 
 -- Tree explorer
-vim.keymap.set('n', '<C-N>', ':Lexplore<CR> :vertical <CR>', { noremap = true })
+vim.keymap.set('n', '<C-N>', ':Lexplore! %:h<CR><CR>', { noremap = true })
 
 vim.keymap.set('n', '<space>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<space>w', ':w<CR>', { noremap = true })
