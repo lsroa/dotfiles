@@ -11,6 +11,9 @@ vim.wo.signcolumn = 'yes'
 vim.o.scrolloff = 8
 vim.o.wrap = false
 
+vim.cmd([[set splitright]])
+vim.cmd([[set splitbelow]])
+
 vim.o.incsearch = true
 vim.o.hlsearch = false
 vim.o.hidden = true
