@@ -124,7 +124,7 @@ local lsp_formatting = function(bufnr)
 			end, clients)
 		end,
 		bufnr = bufnr,
-		async = true,
+		-- async = true,
 	})
 end
 
@@ -165,20 +165,20 @@ local null_ls = require 'null-ls'
 
 null_ls.setup({
 	sources = {
-		-- nulls.builtins.formatting.eslint.with({
+		-- null_ls.builtins.formatting.eslint.with({
 		-- 	disabled_filetypes = { 'vue' },
 		-- 	command = "node_modules/.bin/eslint"
 		-- }),
-		nulls.builtins.diagnostics.eslint.with({
+		null_ls.builtins.diagnostics.eslint.with({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		nulls.builtins.formatting.gofmt,
-		nulls.builtins.formatting.fixjson,
-		nulls.builtins.formatting.prettier.with({
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.fixjson,
+		null_ls.builtins.formatting.prettier.with({
 			command = "node_modules/.bin/prettier"
 		}),
-		nulls.builtins.code_actions.gitsigns,
+		null_ls.builtins.code_actions.gitsigns,
 	},
 	on_attach = on_attach,
 	-- This set the root_dir to the current dir
