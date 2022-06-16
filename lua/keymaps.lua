@@ -22,3 +22,6 @@ vim.keymap.set('n', '<space>w', ':w<CR>', { noremap = true })
 vim.keymap.set('n', '<space>ff', ':Telescope find_files <CR>', { noremap = true })
 vim.keymap.set('n', '<Space>fg', ':Telescope live_grep <CR>', { noremap = true })
 vim.keymap.set('n', '<Leader><Tab>', ':Telescope buffers<CR>', { noremap = true })
+
+-- Short Commands
+vim.cmd('cnorea Git Neogit')

@@ -52,10 +52,7 @@ call plug#end()
 -- ]])
 
 vim.g.mapleader = ' '
-
--- require 'github-theme'.setup {}
--- vim.cmd([[ colorscheme material]])
-vim.cmd([[colorscheme catppuccin]])
+require 'color'
 require 'neogit'.setup {}
 
 -- Auto pair
@@ -163,21 +160,21 @@ local on_attach = function(client, bufnr)
 end
 
 -- Null lsp
-local nulls = require 'null-ls'
+local null_ls = require 'null-ls'
 
-nulls.setup({
+null_ls.setup({
 	sources = {
-		nulls.builtins.formatting.eslint.with({
+		null_ls.builtins.formatting.eslint.with({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		nulls.builtins.diagnostics.eslint.with({
+		null_ls.builtins.diagnostics.eslint.with({
 			disabled_filetypes = { 'vue' },
 			command = "node_modules/.bin/eslint"
 		}),
-		nulls.builtins.formatting.gofmt,
-		nulls.builtins.formatting.fixjson,
-		nulls.builtins.code_actions.gitsigns,
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.fixjson,
+		null_ls.builtins.code_actions.gitsigns,
 	},
 	on_attach = on_attach,
 	-- This set the root_dir to the current dir
