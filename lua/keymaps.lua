@@ -16,11 +16,11 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
 -- Tree explorer
 vim.keymap.set('n', '<C-N>', ':Lexplore! %:h<CR><CR>', { noremap = true })
 
-vim.keymap.set('n', '<space>q', ':q<CR>', { noremap = true })
-vim.keymap.set('n', '<space>w', ':w<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 
-vim.keymap.set('n', '<space>ff', ':Telescope find_files <CR>', { noremap = true })
-vim.keymap.set('n', '<Space>fg', ':Telescope live_grep <CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>ff', ':Telescope find_files <CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', { noremap = true })
 vim.keymap.set('n', '<Leader><Tab>', ':Telescope buffers<CR>', { noremap = true })
 
 -- Short Commands
