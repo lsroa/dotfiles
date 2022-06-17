@@ -6,6 +6,8 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'p00f/nvim-ts-rainbow'
 Plug 'windwp/nvim-ts-autotag'
+Plug 'nvim-treesitter/nvim-treesitter-context'
+
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'markonm/traces.vim'
 
@@ -21,6 +23,7 @@ Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'tpope/vim-commentary'
 Plug 'TimUntersberger/neogit'
+Plug 'sindrets/diffview.nvim'
 
 Plug 'Shatur/neovim-session-manager'
 Plug 'goolord/alpha-nvim'
@@ -45,14 +48,11 @@ Plug 'danymat/neogen'
 call plug#end()
 ]])
 
--- vim.cmd([[
--- 	if (has("termguicolors"))
--- 	  set termguicolors
--- 	endif
--- ]])
-
-vim.g.mapleader = ' '
+vim.g.mapleader = '<Space>'
 require 'color'
+require 'diffview'.setup {
+	use_icons = false
+}
 require 'neogit'.setup {}
 
 -- Auto pair
@@ -304,6 +304,10 @@ require 'nvim-treesitter.configs'.setup {
 		extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
 		max_file_lines = 1000,
 	}
+}
+
+require 'treesitter-context'.setup {
+	enable = true
 }
 
 -- JSDoc generator
