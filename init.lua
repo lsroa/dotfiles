@@ -7,6 +7,7 @@ Plug 'nvim-treesitter/playground'
 Plug 'p00f/nvim-ts-rainbow'
 Plug 'windwp/nvim-ts-autotag'
 Plug 'nvim-treesitter/nvim-treesitter-context'
+Plug 'norcalli/nvim-colorizer.lua'
 
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'markonm/traces.vim'
@@ -17,13 +18,14 @@ Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
-Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'tpope/vim-commentary'
+
 Plug 'TimUntersberger/neogit'
 Plug 'sindrets/diffview.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 
 Plug 'Shatur/neovim-session-manager'
 Plug 'goolord/alpha-nvim'
@@ -48,7 +50,7 @@ Plug 'danymat/neogen'
 call plug#end()
 ]])
 
-vim.g.mapleader = '<Space>'
+vim.g.mapleader = ' '
 require 'color'
 require 'diffview'.setup {
 	use_icons = false
