@@ -6,11 +6,13 @@ vim.fn.toggleDap = function()
 end
 
 vim.keymap.set('n', '<space>br', ":lua require'dap'.toggle_breakpoint()<CR>", { noremap = true })
-vim.keymap.set('n', '<space>bc', ":lua require'dap'.set_breakpoint(vim.fn.input('Break condition: '))<CR>", { noremap = true })
+vim.keymap.set('n', '<space>bc', ":lua require'dap'.set_breakpoint(vim.fn.input('Break condition: '))<CR>",
+	{ noremap = true })
 vim.keymap.set('n', '<space>ds', ":lua vim.fn.toggleDap()<CR>", { noremap = true })
 vim.keymap.set('n', '<space>dk', ":lua require'dap.ui.widgets'.hover()<CR>", { noremap = true })
 vim.keymap.set('n', '<space>dc', ":DapContinue <CR>", { noremap = true })
 
+require 'dap-go'.setup()
 local dap = require 'dap'
 dap.adapters.node2 = {
 	type = 'executable',

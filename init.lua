@@ -32,6 +32,7 @@ Plug 'goolord/alpha-nvim'
 
 
 Plug 'mfussenegger/nvim-dap'
+Plug 'leoluz/nvim-dap-go'
 
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
