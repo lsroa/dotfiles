@@ -24,14 +24,15 @@ cat.remap({
 	},
 	DiffChange = {
 		bg = '#244032',
+	},
+	typescriptDecorator = {
+		fg = cp.orange
+	},
+	NeogitHunkHeader = {
+		bg = cp.surface0
 	}
 
 })
 require 'colorizer'.setup()
 
 vim.cmd([[colorscheme catppuccin]])
-
--- local hl = function(group, opt)
--- 	vim.cmd(":hi clear " .. group)
--- 	vim.api.nvim_set_hl(0, group, opt)
--- end
