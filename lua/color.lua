@@ -25,9 +25,7 @@ cat.remap({
 	DiffChange = {
 		bg = '#244032',
 	},
-	typescriptDecorator = {
-		fg = cp.orange
-	},
+	typescriptDecorator = { fg = cp.orange },
 	NeogitHunkHeader = {
 		bg = cp.surface0
 	}
