@@ -26,3 +26,4 @@ vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true }
 
 -- Short Commands
 vim.cmd('cnorea Git lua require("neogit").open({ kind = "replace"})')
+vim.cmd('cnorea LspLog e $HOME/.cache/nvim/lsp.log')
