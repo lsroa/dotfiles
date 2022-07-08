@@ -119,7 +119,7 @@ local lsp_formatting = function(bufnr)
 	vim.lsp.buf.format({
 		filter = function(clients)
 			return vim.tbl_filter(function(client)
-				return client.name ~= "tsserver"
+				return type(client) == 'table' and client.name ~= "tsserver"
 			end, clients)
 		end,
 		bufnr = bufnr,
