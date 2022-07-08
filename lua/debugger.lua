@@ -5,6 +5,8 @@ vim.fn.toggleDap = function()
 	sidebar.toggle()
 end
 
+require("nvim-dap-virtual-text").setup()
+
 vim.keymap.set('n', '<space>br', ":lua require'dap'.toggle_breakpoint()<CR>", { noremap = true })
 vim.keymap.set('n', '<space>bc', ":lua require'dap'.set_breakpoint(vim.fn.input('Break condition: '))<CR>",
 	{ noremap = true })
