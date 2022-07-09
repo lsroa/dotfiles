@@ -22,6 +22,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'tpope/vim-commentary'
+Plug 'echasnovski/mini.nvim'
 
 Plug 'TimUntersberger/neogit'
 Plug 'sindrets/diffview.nvim'
@@ -84,6 +85,7 @@ require 'lualine'.setup {
 }
 require 'options'
 require 'keymaps'
+require 'mini.tabline'.setup {}
 
 -- Indent
 vim.opt.list = true

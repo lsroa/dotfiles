@@ -28,8 +28,10 @@ cat.remap({
 	typescriptDecorator = { fg = cp.orange },
 	NeogitHunkHeader = {
 		bg = cp.surface0
+	},
+	MiniTablineModifiedCurrent = {
+		fg = cp.yellow
 	}
-
 })
 require 'colorizer'.setup()
 

@@ -21,7 +21,7 @@ vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 
 vim.keymap.set('n', '<Leader>ff', ':Telescope find_files <CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', { noremap = true })
-vim.keymap.set('n', '<Leader><Tab>', ':Telescope buffers<CR>', { noremap = true })
+vim.keymap.set('n', '<Tab>', ':bnext<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true })
 
 -- Short Commands
