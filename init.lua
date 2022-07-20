@@ -20,6 +20,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'editorconfig/editorconfig-vim'
 
 Plug 'tpope/vim-commentary'
 Plug 'echasnovski/mini.nvim'
