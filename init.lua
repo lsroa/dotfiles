@@ -146,20 +146,18 @@ local on_attach = function(client, bufnr)
 	end
 
 	local opts = { noremap = true, silent = true }
-	-- Mappings.
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', ':Telescope lsp_definitions<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>k', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>]', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<Leader>rf',
-		'<cmd>lua require"telescope.builtin".lsp_references({layout_strategy = "horizontal" })<CR>', opts)
+	local cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+
+	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
+	vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
+	vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
+	vim.keymap.set('n', '<Leader>[', function() vim.diagnostic.goto_prev() end, opts)
+	vim.keymap.set('n', '<Leader>]', function() vim.diagnostic.goto_next() end, opts)
+	vim.keymap.set('n', '<Leader>a', function() vim.lsp.buf.code_action() end, opts)
+	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions({ cwd = cwd }) end, opts)
+	vim.keymap.set('n', '<Leader>rf',
+		function() require "telescope.builtin".lsp_references({ layout_strategy = "horizontal", cwd = cwd }) end, opts)
+
 end
 
 -- Null lsp
