@@ -13,17 +13,17 @@ cat.setup {
 }
 cat.remap({
 	DiffAdd = {
-		bg = '#244032'
+		bg = '#005f5f',
 	},
 	DiffDelete = {
-		bg = '#462c32'
+		bg = '#875f5f'
 	},
 	DiffText = {
 		fg = cp.green,
 		bg = '#238636',
 	},
 	DiffChange = {
-		bg = '#244032',
+		bg = '#005f5f',
 	},
 	typescriptDecorator = { fg = cp.orange },
 	NeogitHunkHeader = {
