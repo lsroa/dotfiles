@@ -117,30 +117,17 @@ local handlers = {
 	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
 }
 
--- Formatting
-local lsp_formatting = function(bufnr)
-	vim.lsp.buf.format({
-		filter = function(clients)
-			return vim.tbl_filter(function(client)
-				return type(client) == 'table' and client.name ~= "tsserver"
-			end, clients)
-		end,
-		bufnr = bufnr,
-		-- async = true,
-	})
-end
-
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 local on_attach = function(client, bufnr)
 
-	if client.supports_method('textDocument/formatting') then
+	if client.supports_method('textDocument/formatting') and client.name ~= "tsserver" then
 		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			group = augroup,
 			buffer = bufnr,
 			callback = function()
-				lsp_formatting(bufnr)
+				vim.lsp.buf.format { bufnr = bufnr }
 			end
 		})
 	end
