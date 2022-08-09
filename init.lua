@@ -15,6 +15,7 @@ Plug 'markonm/traces.vim'
 Plug 'marko-cerovac/material.nvim'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
@@ -75,6 +76,48 @@ vim.cmd([[
 	autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=500}
 ]])
 
+require 'nvim-tree'.setup({
+	disable_netrw = true,
+	diagnostics = {
+		enable = false,
+		show_on_dirs = false,
+		debounce_delay = 50,
+		icons = {
+			hint = "H",
+			info = "I",
+			warning = "W",
+			error = "E",
+		},
+	},
+	view = {
+		side = 'right'
+	},
+	filters = {
+		dotfiles = true
+	},
+	renderer = {
+		icons = {
+			glyphs = {
+				default = "",
+				folder = {
+					default = "📁",
+					open = "📂",
+					arrow_open = "-",
+					arrow_closed = "+",
+					empty = "📁",
+					empty_open = "📂",
+					symlink = "-",
+					symlink_open = "+",
+				}
+			},
+
+		},
+		indent_markers = {
+			enable = true,
+		}
+	}
+})
+
 -- Status bar
 
 require 'lualine'.setup {
@@ -84,14 +127,7 @@ require 'lualine'.setup {
 		section_separators = ''
 	}
 }
-require 'options'
 require 'keymaps'
-require 'mini.tabline'.setup {}
-
--- Indent
-vim.opt.list = true
-require("indent_blankline").setup {}
-
 require 'dashboard'
 require 'debugger'
 require 'autocmp'
@@ -119,15 +155,28 @@ local handlers = {
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
+-- Formatting
+local lsp_formatting = function(bufnr)
+	vim.lsp.buf.format({
+		filter = function(clients)
+			return vim.tbl_filter(function(client)
+				return type(client) == 'table' and client.name ~= "tsserver"
+			end, clients)
+		end,
+		bufnr = bufnr,
+		-- async = true,
+	})
+end
+
 local on_attach = function(client, bufnr)
 
-	if client.supports_method('textDocument/formatting') and client.name ~= "tsserver" then
+	if client.supports_method('textDocument/formatting') then
 		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			group = augroup,
 			buffer = bufnr,
 			callback = function()
-				vim.lsp.buf.format { bufnr = bufnr }
+				lsp_formatting(bufnr)
 			end
 		})
 	end
@@ -241,11 +290,10 @@ require 'nvim-treesitter.configs'.setup {
 	},
 	rainbow = {
 		colors = {
-			"#FAB2EA",
+			"#FF5555",
 			"#65DEF1",
 			"#F3CA40",
 			"#FF88DC",
-			"#C3D350",
 			"#4CB944"
 		},
 		enable = true,
@@ -260,9 +308,25 @@ require 'treesitter-context'.setup {
 }
 
 require 'color'
+-- Indent
+require("indent_blankline").setup {
+	char = " ",
+	char_highlight_list = {
+		"IndentBlanklineIndent1",
+		"IndentBlanklineIndent2",
+	},
+	space_char_highlight_list = {
+		"IndentBlanklineIndent1",
+		"IndentBlanklineIndent2",
+	},
+	show_trailing_blankline_indent = false,
+}
 
 -- JSDoc generator
 require 'neogen'.setup {}
+
+require 'options'
+
 
 -- Telescope
 require 'telescope'.setup {

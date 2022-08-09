@@ -14,7 +14,9 @@ vim.keymap.set('n', '<Leader>,', '10<C-w><', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
 
 -- Tree explorer
-vim.keymap.set('n', '<C-N>', ':Lexplore! %:h<CR><CR>', { noremap = true })
+vim.keymap.set('n', '<C-n>', ':NvimTreeToggle <CR>', { noremap = true })
+
+vim.keymap.set('n', '<Leader>gg', ':Neogit <CR>', { noremap = true })
 
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
@@ -26,5 +28,4 @@ vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true })
 
 -- Short Commands
-vim.cmd('cnorea Git lua require("neogit").open({ kind = "replace"})')
 vim.cmd('cnorea LspLog e $HOME/.cache/nvim/lsp.log')
