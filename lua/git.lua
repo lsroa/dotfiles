@@ -1,6 +1,13 @@
 require 'diffview'.setup {
-	use_icons = false
+	use_icons = false,
+	signs = {
+		fold_closed = "+",
+		fold_open = "-"
+	}
 }
+
+vim.keymap.set('n', '<Leader>D', ':DiffviewOpen<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>F', ':DiffviewClose<CR>', { noremap = true })
 
 require 'neogit'.setup {
 	disable_context_highlighting = true,
