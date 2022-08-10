@@ -14,7 +14,7 @@ vim.keymap.set('n', '<Leader>,', '10<C-w><', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
 
 -- Tree explorer
-vim.keymap.set('n', '<C-n>', ':NvimTreeToggle <CR>', { noremap = true })
+vim.keymap.set('n', '<C-n>', ':NeoTreeShowToggle<CR>', { noremap = true })
 
 vim.keymap.set('n', '<Leader>gg', ':Neogit <CR>', { noremap = true })
 

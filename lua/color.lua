@@ -24,12 +24,21 @@ local custom_highlights = {
 	NeogitHunkHeader = {
 		bg = cp.surface0
 	},
-	MiniTablineModifiedCurrent = {
-		fg = cp.yellow
-	},
 	IndentBlankLineIndent1 = {
 		bg = cp.surface0
 	},
+	NeoTreeModified = {
+		fg = cp.lavander
+	},
+	NeoTreeGitDeleted = {
+		fg = cp.red
+	},
+	NeoTreeGitModified = {
+		fg = cp.blue
+	},
+	NeoTreeGitUntracked = {
+		fg = cp.green
+	}
 }
 
 cat.setup {

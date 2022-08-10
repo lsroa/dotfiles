@@ -15,7 +15,8 @@ Plug 'markonm/traces.vim'
 Plug 'marko-cerovac/material.nvim'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'MunifTanjim/nui.nvim'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
@@ -76,47 +77,6 @@ vim.cmd([[
 	autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=500}
 ]])
 
-require 'nvim-tree'.setup({
-	disable_netrw = true,
-	diagnostics = {
-		enable = false,
-		show_on_dirs = false,
-		debounce_delay = 50,
-		icons = {
-			hint = "H",
-			info = "I",
-			warning = "W",
-			error = "E",
-		},
-	},
-	view = {
-		side = 'right'
-	},
-	filters = {
-		dotfiles = true
-	},
-	renderer = {
-		icons = {
-			glyphs = {
-				default = "",
-				folder = {
-					default = "📁",
-					open = "📂",
-					arrow_open = "-",
-					arrow_closed = "+",
-					empty = "📁",
-					empty_open = "📂",
-					symlink = "-",
-					symlink_open = "+",
-				}
-			},
-
-		},
-		indent_markers = {
-			enable = true,
-		}
-	}
-})
 
 -- Status bar
 
@@ -131,6 +91,7 @@ require 'keymaps'
 require 'dashboard'
 require 'debugger'
 require 'autocmp'
+require 'explorer'
 
 -- Diagnostics settings
 vim.diagnostic.config({
