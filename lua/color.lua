@@ -45,8 +45,16 @@ cat.setup {
 	custom_highlights = custom_highlights,
 	term_colors = true,
 	integrations = {
+		gitsigns = true,
 		neogit = true,
-		dap = true
+		dap = true,
+		treesitter = true,
+		telescope = true,
+		neotree = {
+			enabled = true,
+			show_root = true,
+			transparent_panel = true
+		},
 	}
 }
 
