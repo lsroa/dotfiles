@@ -23,7 +23,7 @@ Plug 'B4mbus/oxocarbon-lua.nvim'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'editorconfig/editorconfig-vim'
@@ -225,7 +225,7 @@ local servers = {
 	}
 }
 
-require 'nvim-lsp-installer'.setup {}
+require 'mason'.setup {}
 
 for lsp, config in pairs(servers) do
 	config.on_attach = on_attach
@@ -291,8 +291,6 @@ require("indent_blankline").setup {
 require 'neogen'.setup {}
 
 require 'options'
-
-
 -- Telescope
 require 'telescope'.setup {
 	file_ignore_patterns = { "node_modules" },
