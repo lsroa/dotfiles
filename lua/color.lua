@@ -5,7 +5,28 @@ vim.cmd([[
 ]])
 
 local cp = require("catppuccin.palettes").get_palette "mocha"
-local cat = require 'catppuccin'
+
+local oxo = {
+	black = "#161616",
+	gray2 = "#262626",
+	gray1 = "#393939",
+	gray = "#525252",
+	text = "#dde1e6",
+	text1 = "#f2f4f8",
+	white = "#ffffff",
+	dark_aqua = "#08bdba",
+	aqua = "#3ddbd9",
+	mid_blue = "#78a9ff",
+	pink = "#ee5396",
+	blue = "#33b1ff",
+	light_pink = "#ff7eb6",
+	green = "#42be65",
+	purple = "#be95ff",
+	light_blue = "#82cfff",
+	bg = "#131313",
+}
+
+-- local cat = require 'catppuccin'
 local custom_highlights = {
 	DiffAdd = {
 		bg = '#005f5f',
@@ -20,44 +41,56 @@ local custom_highlights = {
 	DiffChange = {
 		bg = '#005f5f',
 	},
-	typescriptDecorator = { fg = cp.orange },
 	NeogitHunkHeader = {
-		bg = cp.surface0
+		bg = '#525252'
 	},
 	IndentBlankLineIndent1 = {
-		bg = cp.surface0
+		bg = '#222222'
 	},
-	NeoTreeModified = {
-		fg = cp.lavander
+	GitSignsDeleteLn = {
+		bg = '#875f5f'
 	},
-	NeoTreeGitDeleted = {
-		fg = cp.red
+	GitSignsDelete = {
+		fg = '#ff5555'
 	},
+	NeoTreeEndOfBuffer = {
+		fg = '#161616'
+	},
+	NeoTreeDirectoryName = { fg = oxo.blue },
+	NeoTreeDirectoryIcon = { fg = oxo.blue },
+	NeoTreeIndentMarker = { fg = oxo.gray },
+	NeoTreeSymbolicLinkTarget = { fg = oxo.pink },
 	NeoTreeGitModified = {
-		fg = cp.blue
+		fg = oxo.aqua
 	},
-	NeoTreeGitUntracked = {
-		fg = cp.green
-	}
+	NeoTreeGitConflict = {
+		fg = "#ff5555"
+	},
+	NeoTreeUntracked = { fg = oxo.blue },
+	NeoTreeFileNameOpened = { fg = oxo.pink },
 }
 
-cat.setup {
-	custom_highlights = custom_highlights,
-	term_colors = true,
-	integrations = {
-		gitsigns = true,
-		neogit = true,
-		dap = true,
-		treesitter = true,
-		telescope = true,
-		neotree = {
-			enabled = true,
-			show_root = true,
-			transparent_panel = true
-		},
-	}
-}
+-- cat.setup {
+-- 	custom_highlights = custom_highlights,
+-- 	term_colors = true,
+-- 	integrations = {
+-- 		gitsigns = true,
+-- 		neogit = true,
+-- 		dap = true,
+-- 		treesitter = true,
+-- 		telescope = true,
+-- 		neotree = {
+-- 			enabled = true,
+-- 			show_root = true,
+-- 			transparent_panel = true
+-- 		},
+-- 	}
+-- }
 
 require 'colorizer'.setup()
 
-vim.cmd([[colorscheme catppuccin]])
+vim.cmd([[colorscheme oxocarbon-lua]])
+
+for name, hl in pairs(custom_highlights) do
+	vim.api.nvim_set_hl(0, name, hl)
+end

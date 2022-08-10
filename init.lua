@@ -18,6 +18,10 @@ Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'nvim-neo-tree/neo-tree.nvim'
 Plug 'MunifTanjim/nui.nvim'
 
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'B4mbus/oxocarbon-lua.nvim'
+Plug 'christoomey/vim-tmux-navigator'
+
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'nvim-lua/plenary.nvim'
