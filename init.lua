@@ -43,6 +43,10 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'leoluz/nvim-dap-go' 
 Plug 'theHamsta/nvim-dap-virtual-text'
 
+Plug 'antoinemadec/FixCursorHold.nvim'
+Plug 'nvim-neotest/neotest'
+Plug 'haydenmeade/neotest-jest'
+
 Plug 'jose-elias-alvarez/null-ls.nvim'
 
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -96,6 +100,7 @@ require 'dashboard'
 require 'debugger'
 require 'autocmp'
 require 'explorer'
+require 'test'
 
 -- Diagnostics settings
 vim.diagnostic.config({
