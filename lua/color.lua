@@ -24,6 +24,9 @@ local oxo = {
 	purple = "#be95ff",
 	light_blue = "#82cfff",
 	bg = "#131313",
+	red = "#ff5555",
+	yellow = "#f1e05a"
+
 }
 
 -- local cat = require 'catppuccin'
@@ -51,23 +54,33 @@ local custom_highlights = {
 		bg = '#875f5f'
 	},
 	GitSignsDelete = {
-		fg = '#ff5555'
+		fg = oxo.red
 	},
 	NeoTreeEndOfBuffer = {
-		fg = '#161616'
+		fg = oxo.bg
 	},
-	NeoTreeDirectoryName = { fg = oxo.blue },
-	NeoTreeDirectoryIcon = { fg = oxo.blue },
+	NeoTreeDirectoryName = { fg = oxo.text },
+	NeoTreeDirectoryIcon = { fg = oxo.text },
 	NeoTreeIndentMarker = { fg = oxo.gray },
 	NeoTreeSymbolicLinkTarget = { fg = oxo.pink },
 	NeoTreeGitModified = {
 		fg = oxo.aqua
 	},
 	NeoTreeGitConflict = {
-		fg = "#ff5555"
+		fg = oxo.red
 	},
-	NeoTreeUntracked = { fg = oxo.blue },
+	NeoTreeGitUntracked = { fg = oxo.blue },
 	NeoTreeFileNameOpened = { fg = oxo.pink },
+	TelescopeBorder = {
+		fg = oxo.text
+	},
+	FloatBorder = {
+		fg = oxo.text
+	},
+	Cursor = {
+		fg = oxo.yellow,
+		bg = oxo.black
+	}
 }
 
 -- cat.setup {
