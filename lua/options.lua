@@ -18,6 +18,8 @@ vim.o.incsearch = true
 vim.o.hlsearch = false
 vim.o.hidden = true
 
+vim.o.mouse = 'a'
+
 -- Spaces and Tabs
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
