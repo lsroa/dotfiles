@@ -27,5 +27,5 @@ vim.keymap.set('n', '<Tab>', ':bnext<CR>', { noremap = true })
 vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true })
 
--- Short Commands
-vim.cmd('cnorea LspLog e $HOME/.cache/nvim/lsp.log')
+-- Commands
+vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
