@@ -29,3 +29,11 @@ vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true }
 
 -- Commands
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
+
+vim.api.nvim_create_user_command("Neotest", function()
+	require('neotest').run.run()
+end,{})
+
+vim.api.nvim_create_user_command("NeotestOpen", function()
+	require('neotest').output.open({ enter = true })
+end, {})
