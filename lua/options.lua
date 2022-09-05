@@ -17,6 +17,8 @@ vim.cmd([[set splitbelow]])
 vim.o.incsearch = true
 vim.o.hlsearch = false
 vim.o.hidden = true
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 vim.o.mouse = 'a'
 
