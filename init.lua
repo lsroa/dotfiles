@@ -24,6 +24,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'editorconfig/editorconfig-vim'
@@ -182,7 +183,8 @@ null_ls.setup({
 		null_ls.builtins.formatting.gofmt,
 		null_ls.builtins.formatting.fixjson,
 		null_ls.builtins.formatting.prettier.with({
-			command = "node_modules/.bin/prettier"
+			command = "node_modules/.bin/prettier",
+			disabled_filetypes = { 'vue' },
 		}),
 	},
 	on_attach = on_attach,
@@ -230,7 +232,8 @@ local servers = {
 	}
 }
 
-require 'mason'.setup {}
+require 'mason'.setup()
+require 'mason-lspconfig'.setup()
 
 for lsp, config in pairs(servers) do
 	config.on_attach = on_attach
