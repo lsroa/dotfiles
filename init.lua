@@ -129,11 +129,7 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 -- Formatting
 local lsp_formatting = function(bufnr)
 	vim.lsp.buf.format({
-		filter = function(clients)
-			return vim.tbl_filter(function(client)
-				return type(client) == 'table' and client.name ~= "tsserver"
-			end, clients)
-		end,
+		filter = function(client) return client.name ~= "tsserver" end,
 		bufnr = bufnr,
 		-- async = true,
 	})
