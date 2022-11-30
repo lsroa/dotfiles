@@ -1,7 +1,5 @@
 vim.cmd([[
-	if (has("termguicolors"))
    set termguicolors
-  endif
 ]])
 
 local cp = require("catppuccin.palettes").get_palette "mocha"
@@ -102,8 +100,15 @@ local custom_highlights = {
 
 require 'colorizer'.setup()
 
-vim.cmd([[colorscheme oxocarbon-lua]])
+require 'material'.setup {
+	disable = {
+		background = true
+	}
+}
+vim.cmd([[colorscheme material]])
+vim.g.material_style = "deep ocean"
 
-for name, hl in pairs(custom_highlights) do
-	vim.api.nvim_set_hl(0, name, hl)
-end
+-- for name, hl in pairs(custom_highlights) do
+-- 	vim.api.nvim_set_hl(0, name, hl)
+-- end
+-- vim.api.nvim_set_hl(0, "NonText", { bg = oxo.black })
