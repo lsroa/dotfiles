@@ -228,6 +228,7 @@ local servers = {
 	}
 }
 
+require 'globals'
 require 'mason'.setup()
 require 'mason-lspconfig'.setup()
 
