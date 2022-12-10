@@ -103,6 +103,9 @@ require 'colorizer'.setup()
 require 'material'.setup {
 	disable = {
 		background = true
+	},
+	plugins = {
+		'nvim-tree'
 	}
 }
 vim.cmd([[colorscheme material]])
