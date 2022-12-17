@@ -13,6 +13,8 @@ vim.o.wrap = false
 
 vim.cmd([[set splitright]])
 vim.cmd([[set splitbelow]])
+vim.cmd([[set clipboard+=unnamedplus]])
+
 
 vim.o.incsearch = true
 vim.o.hlsearch = false

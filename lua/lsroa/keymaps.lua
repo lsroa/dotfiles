@@ -40,3 +40,17 @@ end, {})
 vim.api.nvim_create_user_command("NeotestOpen", function()
 	require('neotest').output.open({ enter = true })
 end, {})
+
+vim.cmd([[
+  inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+  inoremap <expr> } strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+  inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+  inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+  inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+  inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
+]])
+
+vim.keymap.set('i', '(', '()<left>', { noremap = true })
+vim.keymap.set('i', '[', '[]<left>', { noremap = true })
+vim.keymap.set('i', '{', '{}<left>', { noremap = true })
+vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', { noremap = true })

@@ -6,8 +6,8 @@ require 'diffview'.setup {
 	}
 }
 
-vim.keymap.set('n', '<Leader>D', ':DiffviewOpen<CR>', { noremap = true })
-vim.keymap.set('n', '<Leader>F', ':DiffviewClose<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>dd', ':DiffviewOpen<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>df', ':DiffviewClose<CR>', { noremap = true })
 
 require 'neogit'.setup {
 	disable_context_highlighting = true,

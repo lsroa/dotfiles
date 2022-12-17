@@ -5,13 +5,6 @@ require("neo-tree").setup({
 	enable_diagnostics = true,
 	sort_case_insensitive = false, -- used when sorting files and directories in the tree
 	sort_function = nil, -- use a custom function for sorting files and directories in the tree
-	-- sort_function = function (a,b)
-	--       if a.type == b.type then
-	--           return a.path > b.path
-	--       else
-	--           return a.type > b.type
-	--       end
-	--   end , -- this sorts files and directories descendantly
 	default_component_configs = {
 		container = {
 			enable_character_fade = true
@@ -30,9 +23,9 @@ require("neo-tree").setup({
 			expander_highlight = "NeoTreeExpander",
 		},
 		icon = {
-			folder_closed = "📁",
-			folder_open = "📂",
-			folder_empty = "📁",
+			folder_closed = "*",
+			folder_open = "*",
+			folder_empty = "*",
 			-- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
 			-- then these will never be used.
 			default = "",
@@ -121,10 +114,10 @@ require("neo-tree").setup({
 			hide_gitignored = true,
 			hide_hidden = true, -- only works on Windows for hidden files/directories
 			hide_by_name = {
-				"node_modules"
+				"node_modules",
 			},
 			hide_by_pattern = { -- uses glob style patterns
-				--"*.meta"
+				"*.meta"
 			},
 			never_show = { -- remains hidden even if visible is toggled to true
 				--".DS_Store",
