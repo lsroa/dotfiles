@@ -1,4 +1,5 @@
 vim.g.mapleader = ' '
+require('impatient')
 
 -- Disable some builtin vim plugins
 local disabled_built_ins = {

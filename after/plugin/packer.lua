@@ -13,6 +13,7 @@ return require('packer').startup(function(use)
 	use 'nvim-treesitter/nvim-treesitter-context'
 	use 'norcalli/nvim-colorizer.lua'
 
+	use 'lewis6991/impatient.nvim'
 	use 'markonm/traces.vim'
 
 	use 'marko-cerovac/material.nvim'
