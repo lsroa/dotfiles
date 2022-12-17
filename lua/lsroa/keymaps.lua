@@ -24,7 +24,9 @@ vim.keymap.set('n', '<Leader>gg', ':Neogit <CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 
-vim.keymap.set('n', '<Leader>ff', ':Telescope find_files <CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>ff',
+	"<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>",
+	{ noremap = true })
 vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', { noremap = true })
 vim.keymap.set('v', '>', '>gv', { noremap = true })
 vim.keymap.set('v', '<', '<gv', { noremap = true })
@@ -32,14 +34,6 @@ vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true }
 
 -- Commands
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
-
-vim.api.nvim_create_user_command("Neotest", function()
-	require('neotest').run.run()
-end, {})
-
-vim.api.nvim_create_user_command("NeotestOpen", function()
-	require('neotest').output.open({ enter = true })
-end, {})
 
 vim.cmd([[
   inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
