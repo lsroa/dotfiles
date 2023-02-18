@@ -32,7 +32,7 @@ local on_attach = function(client, bufnr)
 	end
 
 	local opts = { noremap = true, silent = true }
-	local cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	-- local cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
 
 	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
 	vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
@@ -40,10 +40,10 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<Leader>[', function() vim.diagnostic.goto_prev() end, opts)
 	vim.keymap.set('n', '<Leader>]', function() vim.diagnostic.goto_next() end, opts)
 	vim.keymap.set('n', '<Leader>a', function() vim.lsp.buf.code_action() end, opts)
-	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions({ cwd = cwd }) end, opts)
-	vim.keymap.set('n', '<Leader>rf',
-		function() require "telescope.builtin".lsp_references({ layout_strategy = "horizontal", cwd = cwd }) end, opts)
-
+	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
+	vim.keymap.set('n', '<Leader>rf', function()
+		require "telescope.builtin".lsp_references({ layout_strategy = 'vertical' })
+	end, opts)
 end
 
 -- Null lsp
@@ -55,11 +55,12 @@ null_ls.setup({
 		-- 	disabled_filetypes = { 'vue' },
 		-- 	command = "node_modules/.bin/eslint"
 		-- }),
-		null_ls.builtins.diagnostics.eslint.with({
-			disabled_filetypes = { 'vue' },
-			command = "node_modules/.bin/eslint"
-		}),
+		-- null_ls.builtins.diagnostics.eslint.with({
+		-- 	disabled_filetypes = { 'vue' },
+		-- 	-- command = "node_modules/.bin/eslint"
+		-- }),
 		null_ls.builtins.formatting.gofmt,
+		-- null_ls.builtins.formatting.dprint,
 		null_ls.builtins.formatting.prettier.with({
 			-- command = "node_modules/.bin/prettier",
 			disabled_filetypes = { 'vue' },
@@ -74,12 +75,12 @@ null_ls.setup({
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-	pyright = {},
 	gopls = {},
 	gdscript = {},
 	csharp_ls = {},
 	rust_analyzer = {},
-	sumneko_lua = {
+	eslint = {},
+	lua_ls = {
 		settings = {
 			Lua = {
 				runtime = {
@@ -105,9 +106,6 @@ local servers = {
 			}
 		}
 	},
-	volar = {
-		filetypes = { 'vue' }
-	}
 }
 
 require 'mason'.setup()
