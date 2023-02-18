@@ -4,6 +4,10 @@ require 'session_manager'.setup {
 }
 local dashboard = require 'alpha.themes.dashboard'
 local sekiro = {
+	[[]],
+	[[]],
+	[[]],
+	[[]],
 	[[⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣠⣤⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀]],
 	[[⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣤⣴⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀]],
 	[[⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀]],
@@ -74,12 +78,39 @@ local temple = {
 	[[----------------------/| ------------------- |\----------------------]],
 }
 
+local github = {
+	[[]],
+	[[]],
+	[[]],
+	[[]],
+	[[]],
+	[[]],
+	[[]],
+	[[  	             MMM.           .MMM]],
+	[[               MMMMMMMMMMMMMMMMMMM]],
+	[[               MMMMMMMMMMMMMMMMMMM]],
+	[[             MMMMMMMMMMMMMMMMMMMMMMM]],
+	[[            MMMMMMMMMMMMMMMMMMMMMMMM]],
+	[[            MMMM::- -:::::::- -::MMMM]],
+	[[             MM~:~ 00~:::::~ 00~:~MM]],
+	[[        .. MMMMM::.00:::+:::.00::MMMMM ..]],
+	[[              .MM::::: ._. :::::MM.]],
+	[[                 MMMM;:::::;MMMM]],
+	[[          -MM        MMMMMMM]],
+	[[          ^  M+     MMMMMMMMM]],
+	[[              MMMMMMM MM MM MM]],
+	[[                   MM MM MM MM]],
+	[[                   MM MM MM MM]],
+	[[                .~~MM~MM~MM~MM~~.]],
+	[[             ~~~~MM:~MM~~~MM~:MM~~~~]],
+	[[            ~~~~~~==~==~~~==~==~~~~~~]],
+	[[             ~~~~~~==~==~==~==~~~~~~]],
+	[[                 :~==~==~==~==~~]],
+}
+
 dashboard.section.header.val = sekiro
 dashboard.section.buttons.val = {
 	dashboard.button("l", "Last session", ":SessionManager load_last_session<CR>", {}),
-	dashboard.button("e", "Explore", ":e ./<CR>", {}),
-	dashboard.button("f", "Find file", ":Telescope find_files<CR>", {}),
-	dashboard.button("g", "Find text", ":Telescope live_grep<CR>", {}),
 	dashboard.button("c", "Configuration", ":e $MYVIMRC<CR>", {}),
 }
 require 'alpha'.setup(dashboard.opts)
