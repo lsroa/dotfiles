@@ -1,11 +1,4 @@
--- Debugger
-local widgets = require 'dap.ui.widgets'
-local sidebar = widgets.sidebar(widgets.scopes)
-vim.fn.toggleDap = function()
-	sidebar.toggle()
-end
-
-require("nvim-dap-virtual-text").setup()
+require("nvim-dap-virtual-text").setup({})
 
 vim.keymap.set('n', '<space>br', ":lua require'dap'.toggle_breakpoint()<CR>", { noremap = true })
 vim.keymap.set('n', '<space>bc', ":lua require'dap'.set_breakpoint(vim.fn.input('Break condition: '))<CR>",
@@ -20,7 +13,8 @@ dap.adapters.node2 = {
 	type = 'executable',
 	command = 'node',
 	args = {
-		os.getenv('HOME') .. '/dev/vscode-node-debug2/out/src/nodeDebug.js' },
+		os.getenv('HOME') .. '/dev/vscode-node-debug2/out/src/nodeDebug.js'
+	},
 }
 
 dap.configurations.javascript = {
@@ -41,4 +35,25 @@ dap.configurations.javascript = {
 		request = 'attach',
 		processId = require 'dap.utils'.pick_process,
 	}
+}
+
+dap.configurations.typescript = {
+	{
+		name = "Attach to process",
+		type = "node2",
+		request = "attach",
+		processId = require("dap.utils").pick_process,
+		sourceMaps = true,
+		restart = true,
+	},
+	{
+		name = "Launch",
+		type = "node2",
+		request = "launch",
+		program = "${workspaceFolder}/build/index.js",
+		sourceMaps = true,
+		cwd = vim.fn.getcwd(),
+		protocol = "inspector",
+		outFiles = { "${workspaceFolder}/build/*.js" },
+	},
 }
