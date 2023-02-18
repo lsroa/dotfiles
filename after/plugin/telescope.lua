@@ -1,10 +1,14 @@
 require 'telescope'.setup {
-	file_ignore_patterns = { "node_modules" },
-	layout_strategy = 'center',
-	height = 0.9,
-	layout_config = {
-		preview_cutoff = 3,
-		anchor = 'N'
+	defaults = {
+		layout_strategy = "horizontal",
+		path_display = { "truncate" },
+		layout_config = {
+			horizontal = {
+				preview_width = 120,
+				height = 0.9,
+			},
+		}
+
 	},
 	mappings = {
 		i = {
@@ -13,5 +17,7 @@ require 'telescope'.setup {
 		n = {
 			["<Leader>q"] = require 'telescope.actions'.close
 		}
-	}
+	},
 }
+
+require("telescope").load_extension "harpoon"
