@@ -2,6 +2,7 @@ require("neo-tree").setup({
 	close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
 	popup_border_style = "rounded",
 	enable_git_status = true,
+	follow_current_file = false,
 	enable_diagnostics = true,
 	sort_case_insensitive = false, -- used when sorting files and directories in the tree
 	sort_function = nil, -- use a custom function for sorting files and directories in the tree
@@ -124,7 +125,7 @@ require("neo-tree").setup({
 				--"thumbs.db"
 			},
 		},
-		follow_current_file = false, -- This will find and focus the file in the active buffer every
+		follow_current_file = true, -- This will find and focus the file in the active buffer every
 		-- time the current file is changed while the tree is open.
 		group_empty_dirs = false, -- when true, empty folders will be grouped together
 		hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
@@ -149,7 +150,7 @@ require("neo-tree").setup({
 		}
 	},
 	buffers = {
-		follow_current_file = true, -- This will find and focus the file in the active buffer every
+		follow_current_file = false, -- This will find and focus the file in the active buffer every
 		-- time the current file is changed while the tree is open.
 		group_empty_dirs = true, -- when true, empty folders will be grouped together
 		show_unloaded = true,
