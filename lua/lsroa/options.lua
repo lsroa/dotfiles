@@ -32,3 +32,5 @@ vim.o.tabstop = 2
 
 vim.o.laststatus = 3
 vim.o.winbar = [[ %=%m %f ]]
+
+vim.o.swapfile = false

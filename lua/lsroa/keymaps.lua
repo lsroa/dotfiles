@@ -17,16 +17,22 @@ vim.keymap.set('n', "<Leader>s", ':sp<CR>', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
 
 -- Tree explorer
-vim.keymap.set('n', '<C-n>', ':NeoTreeShowToggle<CR>', { noremap = true })
+vim.keymap.set('n', '<C-n>', ':NeoTreeFocusToggle<CR>', { noremap = true })
 
 vim.keymap.set('n', '<Leader>gg', ':Neogit <CR>', { noremap = true })
 
 vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>;', ':', { noremap = true })
 
 vim.keymap.set('n', '<Leader>ff',
-	"<cmd>lua require'telescope.builtin'.find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>",
-	{ noremap = true })
+	function()
+		require 'telescope.builtin'.find_files({
+			find_command = { 'rg', '--files', '--hidden', '-g', '!.git' }
+		})
+	end,
+	{ noremap = true }
+)
 vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', { noremap = true })
 vim.keymap.set('v', '>', '>gv', { noremap = true })
 vim.keymap.set('v', '<', '<gv', { noremap = true })
