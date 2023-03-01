@@ -4,11 +4,11 @@ require 'telescope'.setup {
 		path_display = { "truncate" },
 		layout_config = {
 			horizontal = {
-				preview_width = 120,
+				preview_width = 80,
+				preview_cutoff = 140,
 				height = 0.9,
 			},
 		}
-
 	},
 	mappings = {
 		i = {
