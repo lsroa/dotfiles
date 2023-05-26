@@ -28,7 +28,7 @@ vim.keymap.set('n', '<Leader>;', ':', { noremap = true })
 vim.keymap.set('n', '<Leader>ff',
 	function()
 		require 'telescope.builtin'.find_files({
-			find_command = { 'rg', '--files', '--hidden', '-g', '!.git' }
+			find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!*.meta' }
 		})
 	end,
 	{ noremap = true }
@@ -41,9 +41,21 @@ vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true }
 -- Commands
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
 
-vim.api.nvim_create_user_command("CopyPath", function()
-	vim.fn.setreg("+", vim.fn.expand("%"))
-end, {})
+vim.api.nvim_create_user_command("CopyPath",
+	function()
+		local branch = string.gsub(vim.fn.system("git rev-parse --abbrev-ref HEAD"), "%s", "")
+		local base_path = string.gsub(vim.fn.system(" git rev-parse --show-toplevel "), "%s", "")
+
+		local repo = string.gsub(vim.fn.system([[git config --get remote.origin.url | rg -o ":(.*)\.git" -r '$1']]), "%s", "")
+
+		local file_path = string.sub(vim.fn.expand("%:p"), string.len(base_path) + 1)
+		local line = vim.api.nvim_win_get_cursor(0)[1]
+
+		local copy = "https://github.com/" ..
+				repo .. "/blob" .. "/" .. branch .. file_path .. "#L" .. line
+
+		vim.fn.setreg("+", copy)
+	end, {})
 
 vim.cmd([[
   inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
