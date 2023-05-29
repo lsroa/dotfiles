@@ -40,7 +40,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	end,
 })
 
-require 'lsroa.keymaps'
 
 -- Diagnostics settings
 vim.diagnostic.config({
@@ -49,8 +48,6 @@ vim.diagnostic.config({
 	}
 })
 
-require 'lsroa.globals'
-require 'lsroa.options'
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -65,37 +62,27 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+require("lsroa.keymaps")
+require("lsroa.globals")
+require("lsroa.options")
+
 require('lazy').setup({
 
-	'nvim-lualine/lualine.nvim',
-	{ 'nvim-treesitter/nvim-treesitter',
-		build = ':TSUpdate',
-		dependencies = {
-			'nvim-treesitter/playground',
-			'p00f/nvim-ts-rainbow',
-			'windwp/nvim-ts-autotag',
-			'nvim-treesitter/nvim-treesitter-context',
-		}
+	{ 'nvim-lualine/lualine.nvim',
+		config = function()
+			require 'lualine'.setup {
+				options = {
+					icons_enabled = false,
+					component_separators = '',
+					section_separators = ''
+				}
+			}
+		end
 	},
 	'christoomey/vim-tmux-navigator',
-	'norcalli/nvim-colorizer.lua',
-	'markonm/traces.vim',
-	'marko-cerovac/material.nvim',
-	'projekt0n/github-nvim-theme',
-	{ 'catppuccin/nvim', name = 'catppuccin' },
 	'MunifTanjim/nui.nvim',
-	'nvim-lua/plenary.nvim',
-	{
-		'nvim-neo-tree/neo-tree.nvim',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-		}
-	},
-	'B4mbus/oxocarbon-lua.nvim',
 	{ 'ThePrimeagen/harpoon',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-		},
+		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
 			require('harpoon').setup({ menu = { width = 120 } })
 			-- map add file
@@ -117,51 +104,46 @@ require('lazy').setup({
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
 	'williamboman/mason-lspconfig.nvim',
-	{
-		'nvim-telescope/telescope.nvim',
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-		}
-	},
+
 	'editorconfig/editorconfig-vim',
 	'tpope/vim-commentary',
 
-	'TimUntersberger/neogit',
-	'sindrets/diffview.nvim',
-	'lewis6991/gitsigns.nvim',
-
-	'Shatur/neovim-session-manager',
-	'goolord/alpha-nvim',
 	{
-		'mfussenegger/nvim-dap',
-		dependencies = {
-			'theHamsta/nvim-dap-virtual-text',
+		'TimUntersberger/neogit',
+		enabled = false,
+		opts = {
+			disable_context_highlighting = true,
+			integrations = {
+				diffview = true
+			},
+			commit_popup = {
+				kind = "vsplit",
+			},
+			popup = {
+				kind = "vsplit",
+			}
 		}
 	},
-	{ 'leoluz/nvim-dap-go', ft = 'go' },
-	'jose-elias-alvarez/null-ls.nvim',
-	{
-		"hrsh7th/nvim-cmp",
-		-- load cmp on InsertEnter
-		-- event = "InsertEnter",
-		-- these dependencies will only be loaded when cmp loads
-		-- dependencies are always lazy-loaded unless specified otherwise
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
-			'hrsh7th/cmp-path',
-			'hrsh7th/cmp-cmdline',
-		},
-	},
-	'L3MON4D3/LuaSnip',
-	'saadparwaiz1/cmp_luasnip',
-	'rafamadriz/friendly-snippets',
-	{
-		dir = '/Users/luis.roa/Developer/vim-view/main',
+	{ 'sindrets/diffview.nvim',
+		name = "diffview",
 		config = function()
-			require('vim-view').setup()
+			require 'diffview'.setup {
+				use_icons = false,
+				signs = {
+					fold_closed = "+",
+					fold_open = "-"
+				}
+			}
+
+			vim.keymap.set('n', '<Leader>dd', ':DiffviewOpen<CR>', { noremap = true })
+			vim.keymap.set('n', '<Leader>df', ':DiffviewClose<CR>', { noremap = true })
+
 		end
-	}
+	},
+
+	{ "rmagatti/auto-session", opts = {} },
+
+	{ import = 'lsroa.plugins' },
 })
 
 -- Signs

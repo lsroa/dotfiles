@@ -1,10 +1,9 @@
--- Setup lspconfig
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- LSP settings
 local handlers = {
-	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
-	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
+	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
+	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help),
 }
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -32,7 +31,6 @@ local on_attach = function(client, bufnr)
 	end
 
 	local opts = { noremap = true, silent = true }
-	-- local cwd = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
 
 	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
 	vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
@@ -46,31 +44,6 @@ local on_attach = function(client, bufnr)
 	end, opts)
 end
 
--- Null lsp
-local null_ls = require 'null-ls'
-
-null_ls.setup({
-	sources = {
-		-- null_ls.builtins.formatting.eslint.with({
-		-- 	disabled_filetypes = { 'vue' },
-		-- 	command = "node_modules/.bin/eslint"
-		-- }),
-		-- null_ls.builtins.diagnostics.eslint.with({
-		-- 	disabled_filetypes = { 'vue' },
-		-- 	-- command = "node_modules/.bin/eslint"
-		-- }),
-		null_ls.builtins.formatting.gofmt,
-		-- null_ls.builtins.formatting.dprint,
-		null_ls.builtins.formatting.prettier.with({
-			-- command = "node_modules/.bin/prettier",
-			disabled_filetypes = { 'vue' },
-		}),
-	},
-	on_attach = on_attach,
-	-- This set the root_dir to the current dir
-	-- root_dir = function() return nil end,
-	debug = true,
-})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -118,3 +91,24 @@ for lsp, config in pairs(servers) do
 
 	require 'lspconfig'[lsp].setup(config)
 end
+
+return {
+	'jose-elias-alvarez/null-ls.nvim',
+	config = function()
+		local null_ls = require 'null-ls'
+
+		null_ls.setup({
+			sources = {
+				null_ls.builtins.diagnostics.eslint.with({
+					disabled_filetypes = { 'vue' },
+					-- command = "node_modules/.bin/eslint"
+				}),
+				null_ls.builtins.formatting.gofmt,
+				null_ls.builtins.formatting.prettier.with({
+					disabled_filetypes = { 'vue' },
+				}),
+			},
+			on_attach = on_attach,
+		})
+	end
+}
