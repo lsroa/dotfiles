@@ -47,6 +47,12 @@ return {
 				GitSignsDeleteLn = {
 					bg = '#875f5f'
 				},
+				-- Search = {
+				-- 	fg = oxo.light_pink,
+				-- },
+				-- LspInlayHint = {
+				-- 	fg = oxo.gray,
+				-- },
 			},
 			term_colors = true,
 			transparent_background = true,

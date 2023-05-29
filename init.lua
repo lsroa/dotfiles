@@ -43,6 +43,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Diagnostics settings
 vim.diagnostic.config({
+	virtual_text = false,
 	float = {
 		border = 'rounded'
 	}
@@ -101,6 +102,11 @@ require('lazy').setup({
 			)
 		end
 	},
+	{
+		'weilbith/nvim-code-action-menu',
+		cmd = 'CodeActionMenu',
+	},
+	{ 'github/copilot.vim' },
 	'neovim/nvim-lspconfig',
 	'williamboman/mason.nvim',
 	'williamboman/mason-lspconfig.nvim',
@@ -142,7 +148,7 @@ require('lazy').setup({
 	},
 
 	{ "rmagatti/auto-session", opts = {} },
-
+	'jose-elias-alvarez/null-ls.nvim',
 	{ import = 'lsroa.plugins' },
 })
 
