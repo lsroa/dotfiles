@@ -1,10 +1,10 @@
 -- General Keymaps
 vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true })
-vim.keymap.set('n', '<c-h>', ':wincmd h<CR>', { noremap = true })
-vim.keymap.set('n', '<c-j>', ':wincmd j<CR>', { noremap = true })
-vim.keymap.set('n', '<c-k>', ':wincmd k<CR>', { noremap = true })
-vim.keymap.set('n', '<c-l>', ':wincmd l<CR>', { noremap = true })
+vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', { noremap = true })
+vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', { noremap = true })
+vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', { noremap = true })
+vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', { noremap = true })
 vim.keymap.set('n', '<c-w>j', ':wincmd -5<CR>', { noremap = true })
 vim.keymap.set('n', '<c-w>k', ':wincmd +5<CR>', { noremap = true })
 -- toggle uppercase

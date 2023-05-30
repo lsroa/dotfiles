@@ -1,10 +1,17 @@
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- LSP settings
-local handlers = {
-	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover),
-	["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help),
-}
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+	vim.lsp.handlers.signature_help, {
+	border = 'rounded',
+	close_events = { "BufHidden", "InsertLeave" },
+})
+
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+	vim.lsp.handlers.hover, {
+	border = 'rounded',
+})
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
@@ -44,31 +51,6 @@ local on_attach = function(client, bufnr)
 	end, opts)
 end
 
--- Null lsp
-local null_ls = require 'null-ls'
-
-null_ls.setup({
-	sources = {
-		-- null_ls.builtins.formatting.eslint.with({
-		-- 	disabled_filetypes = { 'vue' },
-		-- 	command = "node_modules/.bin/eslint"
-		-- }),
-		null_ls.builtins.diagnostics.eslint_d.with({
-			disabled_filetypes = { 'vue' },
-		}),
-		null_ls.builtins.formatting.gofmt,
-		-- null_ls.builtins.formatting.dprint,
-		null_ls.builtins.formatting.prettier.with({
-			-- command = "node_modules/.bin/prettier",
-			disabled_filetypes = { 'vue' },
-		}),
-	},
-	on_attach = on_attach,
-	-- This set the root_dir to the current dir
-	-- root_dir = function() return nil end,
-	debug = true,
-})
-
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
@@ -107,7 +89,7 @@ local servers = {
 					checkThirdParty = false,
 				},
 				telemetry = {
-					enable = true
+					enable = false
 				}
 			}
 		}
@@ -126,29 +108,23 @@ require 'mason-lspconfig'.setup()
 
 for lsp, config in pairs(servers) do
 	config.on_attach = on_attach
-	config.handlers = handlers
 	config.capabilities = capabilities
 
 	require 'lspconfig'[lsp].setup(config)
 end
 
-return {
-	'jose-elias-alvarez/null-ls.nvim',
-	config = function()
-		local null_ls = require 'null-ls'
+local null_ls = require 'null-ls'
 
-		null_ls.setup({
-			sources = {
-				null_ls.builtins.diagnostics.eslint.with({
-					disabled_filetypes = { 'vue' },
-					-- command = "node_modules/.bin/eslint"
-				}),
-				null_ls.builtins.formatting.gofmt,
-				null_ls.builtins.formatting.prettier.with({
-					disabled_filetypes = { 'vue' },
-				}),
-			},
-			on_attach = on_attach,
-		})
-	end
-}
+null_ls.setup({
+	sources = {
+		null_ls.builtins.diagnostics.eslint.with({
+			disabled_filetypes = { 'vue' },
+			-- command = "node_modules/.bin/eslint"
+		}),
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.prettier.with({
+			disabled_filetypes = { 'vue' },
+		}),
+	},
+	on_attach = on_attach,
+})

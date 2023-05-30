@@ -44,9 +44,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- Diagnostics settings
 vim.diagnostic.config({
 	virtual_text = false,
-	float = {
-		border = 'rounded'
-	}
+	float = { border = 'rounded' }
 })
 
 
@@ -63,12 +61,34 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lsroa.keymaps")
-require("lsroa.globals")
-require("lsroa.options")
 
 require('lazy').setup({
 
+	'editorconfig/editorconfig-vim',
+	'christoomey/vim-tmux-navigator',
+	'tpope/vim-commentary',
+	{
+		enabled = false,
+		'Lilja/zellij.nvim',
+		config = function()
+			require('zellij').setup({
+				vimTmuxNavigatorKeybinds = true,
+			})
+		end
+	},
+	'MunifTanjim/nui.nvim',
+	'jose-elias-alvarez/null-ls.nvim',
+	{ 'github/copilot.vim', enabled = false },
+	{ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
+	{
+		-- LSP Configuration & Plugins
+		'neovim/nvim-lspconfig',
+		dependencies = {
+			-- Automatically install LSPs to stdpath for neovim
+			{ 'williamboman/mason.nvim', config = true },
+			'williamboman/mason-lspconfig.nvim',
+		},
+	},
 	{ 'nvim-lualine/lualine.nvim',
 		config = function()
 			require 'lualine'.setup {
@@ -80,8 +100,6 @@ require('lazy').setup({
 			}
 		end
 	},
-	'christoomey/vim-tmux-navigator',
-	'MunifTanjim/nui.nvim',
 	{ 'ThePrimeagen/harpoon',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
@@ -102,18 +120,6 @@ require('lazy').setup({
 			)
 		end
 	},
-	{
-		'weilbith/nvim-code-action-menu',
-		cmd = 'CodeActionMenu',
-	},
-	{ 'github/copilot.vim' },
-	'neovim/nvim-lspconfig',
-	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
-
-	'editorconfig/editorconfig-vim',
-	'tpope/vim-commentary',
-
 	{
 		'TimUntersberger/neogit',
 		enabled = false,
@@ -146,11 +152,44 @@ require('lazy').setup({
 
 		end
 	},
-
+	{
+		-- Add indentation guides even on blank lines
+		'lukas-reineke/indent-blankline.nvim',
+		-- Enable `lukas-reineke/indent-blankline.nvim`
+		-- See `:help indent_blankline.txt`
+		opts = {
+			char = '┊',
+			show_trailing_blankline_indent = false,
+		},
+		enabled = true,
+	},
 	{ "rmagatti/auto-session", opts = {} },
-	'jose-elias-alvarez/null-ls.nvim',
+	{
+		-- Autocompletion
+		'hrsh7th/nvim-cmp',
+		dependencies = {
+			-- Snippet Engine & its associated nvim-cmp source
+			'L3MON4D3/LuaSnip',
+			'saadparwaiz1/cmp_luasnip',
+
+			'hrsh7th/cmp-buffer',
+			'hrsh7th/cmp-cmdline',
+
+			-- Adds LSP completion capabilities
+			'hrsh7th/cmp-nvim-lsp',
+
+			-- Adds a number of user-friendly snippets
+			'rafamadriz/friendly-snippets',
+		},
+	},
 	{ import = 'lsroa.plugins' },
 })
+
+require("lsroa.keymaps")
+require("lsroa.globals")
+require("lsroa.options")
+require("lsroa.lsp")
+require("lsroa.autocmp")
 
 -- Signs
 local signs = {
