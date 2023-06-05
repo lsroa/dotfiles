@@ -7,6 +7,7 @@ vim.g.netrw_preview = 1
 vim.wo.relativenumber = true
 vim.wo.number = true
 vim.wo.signcolumn = 'yes'
+vim.wo.cursorline = true
 
 vim.o.scrolloff = 8
 vim.o.wrap = false

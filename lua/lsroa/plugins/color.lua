@@ -50,6 +50,10 @@ return {
 				DapBreakpoint = {
 					fg = '#f7df1e'
 				}
+				MatchParen = {
+					fg = 'none',
+					bg = '#525252',
+				},
 				-- Search = {
 				-- 	fg = oxo.light_pink,
 				-- },

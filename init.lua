@@ -12,7 +12,6 @@ local disabled_built_ins = {
 	"netrwSettings",
 	"netrwFileHandlers",
 	"matchit",
-	"matchparen",
 	"tar",
 	"tarPlugin",
 	"rrhelper",
@@ -233,7 +232,7 @@ require('lazy').setup({
 		},
 		enabled = true,
 	},
-	{ "rmagatti/auto-session", opts = {} },
+	{ "rmagatti/auto-session", opts = { auto_save_enabled = true } },
 	{
 		-- Autocompletion
 		'hrsh7th/nvim-cmp',
