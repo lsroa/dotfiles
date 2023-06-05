@@ -100,6 +100,76 @@ require('lazy').setup({
 			}
 		end
 	},
+	{ "theHamsta/nvim-dap-virtual-text",
+		config = function()
+			require("nvim-dap-virtual-text").setup({})
+		end
+	},
+	{ "mfussenegger/nvim-dap",
+		requires = { "nvim-dap-virtual-text" },
+		config = function()
+			vim.keymap.set("n", "<Leader>b",
+				function()
+					require 'dap'.toggle_breakpoint()
+				end,
+				{ noremap = true })
+
+			vim.keymap.set("n", "<Leader>dc",
+				function()
+					require 'dap'.continue()
+				end,
+				{ noremap = true })
+
+			vim.keymap.set("n", "<Leader>dr",
+				function()
+					require 'dap'.repl.open()
+				end,
+				{ noremap = true })
+
+			vim.keymap.set("n", "]d",
+				function()
+					require 'dap'.step_over()
+				end,
+				{ noremap = true })
+
+			vim.keymap.set("n", "[d",
+				function()
+					require 'dap'.step_into()
+				end,
+				{ noremap = true })
+
+			vim.keymap.set("n", "<Leader>dk",
+				function()
+					require("dap.ui.widgets").hover()
+				end,
+				{ noremap = true })
+		end
+	},
+	{
+		"mxsdev/nvim-dap-vscode-js",
+		requires = { "mfussenegger/nvim-dap" },
+		build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+		enabled = false,
+		ft = "typescript"
+	},
+	{
+		"leoluz/nvim-dap-go",
+		requires = {
+			"mfussenegger/nvim-dap",
+			"nvim-dap-virtual-text"
+		},
+		config = function()
+			local dap_go = require('dap-go')
+			dap_go.setup()
+			vim.keymap.set("n", "<Leader>dt",
+				function()
+					dap_go.debug_test()
+				end,
+				{ noremap = true })
+		end,
+		ft = "go"
+	},
+
 	{ 'ThePrimeagen/harpoon',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
