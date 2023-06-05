@@ -47,6 +47,9 @@ return {
 				GitSignsDeleteLn = {
 					bg = '#875f5f'
 				},
+				DapBreakpoint = {
+					fg = '#f7df1e'
+				}
 				-- Search = {
 				-- 	fg = oxo.light_pink,
 				-- },

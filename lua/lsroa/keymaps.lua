@@ -28,6 +28,11 @@ vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
 vim.keymap.set('n', '<Leader>;', ':', { noremap = true })
 
+vim.keymap.set('n', ']t', ':tabnext<CR>', { noremap = true })
+vim.keymap.set('n', '[t', ':tabprevious<CR>', { noremap = true })
+vim.keymap.set('n', '<Left>', '^', { noremap = true })
+vim.keymap.set('n', '<Right>', '$', { noremap = true })
+
 vim.keymap.set('n', '<Leader>ff',
 	function()
 		require 'telescope.builtin'.find_files({
