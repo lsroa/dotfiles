@@ -147,9 +147,51 @@ require('lazy').setup({
 	{
 		"mxsdev/nvim-dap-vscode-js",
 		requires = { "mfussenegger/nvim-dap" },
-		build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
-		enabled = false,
-		ft = "typescript"
+		ft = "typescript",
+		config = function()
+			require("dap-vscode-js").setup {
+				node_path = "node",
+				debugger_path = os.getenv("HOME") .. "/Developer/vscode-js-debug",
+				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
+			}
+
+			require("dap").configurations.typescript = {
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Start server",
+					program = "${file}",
+					cwd = "${workspaceFolder}",
+					runtimeExecutable = "yarn",
+					runtimeArgs = {
+						"start:debug"
+					}
+				},
+				-- {
+				-- 	type = "pwa-node",
+				-- 	request = "attach",
+				-- 	name = "Attach",
+				-- 	processId = require("dap.utils").pick_process,
+				-- 	cwd = "${workspaceFolder}",
+				-- },
+				{
+					type = "pwa-node",
+					request = "launch",
+					name = "Debug Jest Tests",
+					-- trace = true, -- include debugger info
+					runtimeExecutable = "node",
+					runtimeArgs = {
+						"./node_modules/jest/bin/jest.js",
+						"--runInBand",
+						"${file}"
+					},
+					rootPath = "${workspaceFolder}",
+					cwd = "${workspaceFolder}",
+					console = "integratedTerminal",
+					internalConsoleOptions = "neverOpen",
+				},
+			}
+		end
 	},
 	{
 		"leoluz/nvim-dap-go",
