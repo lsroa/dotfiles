@@ -58,6 +58,7 @@ local servers = {
 	gopls = {},
 	gdscript = {},
 	zls = {},
+	eslint = {},
 	-- csharp_ls = {},
 	rust_analyzer = {
 		imports = {
@@ -118,10 +119,10 @@ local null_ls = require 'null-ls'
 
 null_ls.setup({
 	sources = {
-		null_ls.builtins.diagnostics.eslint.with({
-			disabled_filetypes = { 'vue' },
-			-- command = "node_modules/.bin/eslint"
-		}),
+		-- null_ls.builtins.diagnostics.eslint_d.with({
+		-- 	disabled_filetypes = { 'vue' },
+		-- 	-- command = "node_modules/.bin/eslint"
+		-- }),
 		null_ls.builtins.formatting.gofmt,
 		null_ls.builtins.formatting.prettier.with({
 			disabled_filetypes = { 'vue' },
