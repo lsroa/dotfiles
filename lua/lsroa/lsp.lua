@@ -4,14 +4,14 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 	vim.lsp.handlers.signature_help, {
-	border = 'rounded',
-	close_events = { "BufHidden", "InsertLeave" },
-})
+		border = 'rounded',
+		close_events = { "BufHidden", "InsertLeave" },
+	})
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
 	vim.lsp.handlers.hover, {
-	border = 'rounded',
-})
+		border = 'rounded',
+	})
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
@@ -25,7 +25,6 @@ local lsp_formatting = function(bufnr)
 end
 
 local on_attach = function(client, bufnr)
-
 	if client.supports_method('textDocument/formatting') then
 		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 		vim.api.nvim_create_autocmd("BufWritePre", {
@@ -42,14 +41,13 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
 	vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
 	vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
+	vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
 	vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
 	vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
 	vim.keymap.set('n', '<Leader>a', ':CodeActionMenu<CR>', opts)
 	vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
 	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
-	vim.keymap.set('n', '<Leader>rf', function()
-		require "telescope.builtin".lsp_references({ layout_strategy = 'vertical' })
-	end, opts)
+	vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
