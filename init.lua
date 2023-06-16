@@ -77,7 +77,7 @@ require('lazy').setup({
 	},
 	'MunifTanjim/nui.nvim',
 	'jose-elias-alvarez/null-ls.nvim',
-	{ 'github/copilot.vim', enabled = false },
+	{ 'github/copilot.vim',             enabled = true },
 	{ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
 	{
 		-- LSP Configuration & Plugins
@@ -88,7 +88,8 @@ require('lazy').setup({
 			'williamboman/mason-lspconfig.nvim',
 		},
 	},
-	{ 'nvim-lualine/lualine.nvim',
+	{
+		'nvim-lualine/lualine.nvim',
 		config = function()
 			require 'lualine'.setup {
 				options = {
@@ -99,12 +100,14 @@ require('lazy').setup({
 			}
 		end
 	},
-	{ "theHamsta/nvim-dap-virtual-text",
+	{
+		"theHamsta/nvim-dap-virtual-text",
 		config = function()
 			require("nvim-dap-virtual-text").setup({})
 		end
 	},
-	{ "mfussenegger/nvim-dap",
+	{
+		"mfussenegger/nvim-dap",
 		requires = { "nvim-dap-virtual-text" },
 		config = function()
 			vim.keymap.set("n", "<Leader>b",
@@ -163,6 +166,7 @@ require('lazy').setup({
 					program = "${file}",
 					cwd = "${workspaceFolder}",
 					runtimeExecutable = "yarn",
+					console = "integratedTerminal",
 					runtimeArgs = {
 						"start:debug"
 					}
@@ -210,8 +214,10 @@ require('lazy').setup({
 		end,
 		ft = "go"
 	},
-
-	{ 'ThePrimeagen/harpoon',
+	{ 'kevinhwang91/nvim-bqf', ft = 'qf' },
+	{ 'itchyny/vim-qfedit',    ft = 'qf' },
+	{
+		'ThePrimeagen/harpoon',
 		dependencies = { 'nvim-lua/plenary.nvim' },
 		config = function()
 			require('harpoon').setup({ menu = { width = 120 } })
@@ -247,7 +253,8 @@ require('lazy').setup({
 			}
 		}
 	},
-	{ 'sindrets/diffview.nvim',
+	{
+		'sindrets/diffview.nvim',
 		name = "diffview",
 		config = function()
 			require 'diffview'.setup {
@@ -260,7 +267,6 @@ require('lazy').setup({
 
 			vim.keymap.set('n', '<Leader>dd', ':DiffviewOpen<CR>', { noremap = true })
 			vim.keymap.set('n', '<Leader>df', ':DiffviewClose<CR>', { noremap = true })
-
 		end
 	},
 	{
