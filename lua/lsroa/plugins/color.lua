@@ -41,6 +41,9 @@ return {
 				NeogitHunkHeader = {
 					bg = '#525252',
 				},
+				NeoTreeGitUntracked = {
+					fg = '#F9E2AF'
+				},
 				-- IndentBlankLineIndent1 = {
 				-- 	bg = '#222222'
 				-- },
