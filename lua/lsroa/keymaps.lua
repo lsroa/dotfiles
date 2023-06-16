@@ -1,10 +1,10 @@
 -- General Keymaps
 vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true })
-vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', { noremap = true })
-vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', { noremap = true })
-vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', { noremap = true })
-vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', { noremap = true })
+vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<c-w>j', ':wincmd -5<CR>', { noremap = true })
 vim.keymap.set('n', '<c-w>k', ':wincmd +5<CR>', { noremap = true })
 -- toggle uppercase
@@ -30,8 +30,8 @@ vim.keymap.set('n', '<Leader>;', ':', { noremap = true })
 
 vim.keymap.set('n', ']t', ':tabnext<CR>', { noremap = true })
 vim.keymap.set('n', '[t', ':tabprevious<CR>', { noremap = true })
-vim.keymap.set('n', '<Left>', '^', { noremap = true })
-vim.keymap.set('n', '<Right>', '$', { noremap = true })
+vim.keymap.set({ 'n' }, '<Left>', '^', { noremap = true })
+vim.keymap.set({ 'n' }, '<Right>', '$', { noremap = true })
 
 vim.keymap.set('n', '<Leader>ff',
 	function()
@@ -73,6 +73,13 @@ vim.cmd([[
   inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
   inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
 ]])
+
+vim.api.nvim_create_autocmd("VimResized", {
+	pattern = "*",
+	callback = function()
+		vim.cmd("wincmd =")
+	end
+})
 
 vim.keymap.set('i', '(', '()<left>', { noremap = true })
 vim.keymap.set('i', '[', '[]<left>', { noremap = true })

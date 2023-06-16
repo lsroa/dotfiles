@@ -16,7 +16,7 @@ vim.cmd([[set splitright]])
 vim.cmd([[set splitbelow]])
 vim.cmd([[set clipboard+=unnamedplus]])
 
-vim.o.guicursor = 'a:blinkon1'
+vim.o.guicursor = 'a:blinkon1,i:ver25'
 
 vim.o.incsearch = true
 vim.o.hlsearch = false
