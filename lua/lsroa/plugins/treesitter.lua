@@ -9,17 +9,17 @@ return {
 	},
 	config = function()
 		require 'nvim-treesitter.configs'.setup {
-			ensure_install = { "javascript", "jsdoc", "vue", "css", "json" },
+			-- ensure_install = { "javascript", "jsdoc", "css", "json" },
 			highlight = {
 				enable = true,
 			},
-			playground = {
-				enable = true,
-				keybindings = {
-					toggle_hl_groups = 'i',
-					show_help = '?'
-				}
-			},
+			-- playground = {
+			-- 	enable = true,
+			-- 	keybindings = {
+			-- 		toggle_hl_groups = 'i',
+			-- 		show_help = '?'
+			-- 	}
+			-- },
 			autotag = {
 				enable = true
 			},
@@ -30,7 +30,7 @@ return {
 					"#F3CA40",
 					"#FF88DC",
 				},
-				enable = true,
+				enable = false,
 				-- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
 				extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
 				max_file_lines = 1000,
