@@ -1,37 +1,74 @@
+local opts = { noremap = true, silent = true }
 -- General Keymaps
-vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
-vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true })
-vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<c-w>j', ':wincmd -5<CR>', { noremap = true })
-vim.keymap.set('n', '<c-w>k', ':wincmd +5<CR>', { noremap = true })
--- toggle uppercase
-vim.keymap.set('n', '<Leader>uu', 'g~iw', { noremap = true })
+vim.keymap.set('i', 'jk', '<Esc>', opts)
+vim.keymap.set('t', 'jk', '<C-\\><C-n>', opts)
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', opts)
+vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', opts)
+vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', opts)
+vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', opts)
+vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', opts)
+vim.keymap.set('n', '<CR>', 'ciw', opts) -- toggle uppercase
+vim.keymap.set('n', '<Leader>uu', 'g~iw', opts)
 
-vim.keymap.set('n', '<c-w>l', '5<C-w>>', { noremap = true })
-vim.keymap.set('n', '<c-w>h', '5<C-w><', { noremap = true })
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true })
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true })
-vim.keymap.set('n', "<Leader>S", ':vs<CR>', { noremap = true })
-vim.keymap.set('n', "<Leader>s", ':sp<CR>', { noremap = true })
+vim.keymap.set('n', '<F6>', function()
+	local is_left = vim.api.nvim_win_get_position(0)[2] == 0
+	if is_left then
+		vim.cmd('vertical resize -5')
+	else
+		vim.cmd('vertical resize +5')
+	end
+end, opts)
+
+vim.keymap.set('n', '<F7>', function()
+	local is_top = vim.api.nvim_win_get_position(0)[1] == 0
+	if is_top then
+		vim.cmd('resize +5')
+	else
+		vim.cmd('resize -5')
+	end
+end, opts)
+
+vim.keymap.set('n', '<F8>', function()
+	local is_top = vim.api.nvim_win_get_position(0)[1] == 0
+	if is_top then
+		vim.cmd('resize -5')
+	else
+		vim.cmd('resize +5')
+	end
+end, opts)
+
+vim.keymap.set('n', '<F9>', function()
+	local is_left = vim.api.nvim_win_get_position(0)[2] == 0
+	if is_left then
+		vim.cmd('vertical resize +5')
+	else
+		vim.cmd('vertical resize -5')
+	end
+end, opts)
+
+vim.keymap.set('n', '<c-w>l', '5<C-w>>', opts)
+vim.keymap.set('n', '<c-w>h', '5<C-w><', opts)
+vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
+vim.keymap.set('n', '<C-d>', '<C-d>zz', opts)
+vim.keymap.set('n', "<Leader>S", ':vs<CR>', opts)
+vim.keymap.set('n', "<Leader>s", ':sp<CR>', opts)
 -- Auto comment
-vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', opts)
 
 -- Tree explorer
-vim.keymap.set('n', '<C-n>', ':NeoTreeFocusToggle<CR>', { noremap = true })
+vim.keymap.set('n', '<C-n>', ':NeoTreeFocusToggle<CR>', opts)
+vim.keymap.set('n', '<C-f>', ':NeoTreeFloatToggle<CR>', opts)
 
-vim.keymap.set('n', '<Leader>gg', ':Neogit <CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>q', ':q<CR>', opts)
+vim.keymap.set('n', '<Leader>w', ':w<CR>', opts)
 
-vim.keymap.set('n', '<Leader>q', ':q<CR>', { noremap = true })
-vim.keymap.set('n', '<Leader>w', ':w<CR>', { noremap = true })
-vim.keymap.set('n', '<Leader>;', ':', { noremap = true })
+vim.keymap.set('n', ']t', ':tabnext<CR>', opts)
+vim.keymap.set('n', '[t', ':tabprevious<CR>', opts)
+vim.keymap.set({ 'n' }, '<Left>', '^', opts)
+vim.keymap.set({ 'n' }, '<Right>', '$', opts)
 
-vim.keymap.set('n', ']t', ':tabnext<CR>', { noremap = true })
-vim.keymap.set('n', '[t', ':tabprevious<CR>', { noremap = true })
-vim.keymap.set({ 'n' }, '<Left>', '^', { noremap = true })
-vim.keymap.set({ 'n' }, '<Right>', '$', { noremap = true })
+-- Dont yank on put
+vim.keymap.set('x', 'p', '"_dP', opts)
 
 vim.keymap.set('n', '<Leader>ff',
 	function()
@@ -39,12 +76,56 @@ vim.keymap.set('n', '<Leader>ff',
 			find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!*.meta' }
 		})
 	end,
-	{ noremap = true }
+	opts
 )
-vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', { noremap = true })
-vim.keymap.set('v', '>', '>gv', { noremap = true })
-vim.keymap.set('v', '<', '<gv', { noremap = true })
-vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', opts)
+vim.keymap.set('n', '<Leader>fb', ':Telescope buffers <CR>', opts)
+vim.keymap.set('v', '>', '>gv', opts)
+vim.keymap.set('v', '<', '<gv', opts)
+vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', opts)
+
+
+vim.keymap.set('n', '<Leader>tt', function()
+	local file_path = vim.fn.expand("%:p:h")
+	local file_name = string.gsub(string.gsub(vim.fn.expand("%:t"), ".ts$", ""), ".tsx$", "")
+	for _, path in ipairs {
+		file_path .. '/__test__/' .. file_name .. ".test.ts",
+		file_path .. '/__test__/' .. file_name .. ".test.tsx",
+		file_path .. '/' .. file_name .. ".test.ts",
+		file_path .. '/' .. file_name .. ".test.tsx",
+		file_path .. '/__test__/' .. file_name .. ".spec.tsx",
+		file_path .. '/__test__/' .. file_name .. ".spec.ts",
+	} do
+		print(path)
+		if vim.fn.filereadable(path) == 1 then
+			if vim.fn.winwidth(0) < 150 then
+				vim.cmd("split " .. path)
+			else
+				vim.cmd("vsplit " .. path)
+			end
+		end
+	end
+end, opts)
+
+
+vim.keymap.set('n', '<Leader>x', function()
+	local file_path = vim.fn.expand("%:p")
+	if vim.fn.winwidth(0) < 150 then
+		vim.cmd("split")
+	else
+		vim.cmd("vsplit")
+	end
+
+	if vim.fn.filereadable(file_path) == 1 then
+		vim.cmd("terminal npx jest " .. file_path)
+	end
+end, opts)
+
+vim.keymap.set('n', '<Leader>g', function()
+	os.execute("tmux split-window -h gg")
+end, opts)
+
+
 
 -- Commands
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
@@ -81,7 +162,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 	end
 })
 
-vim.keymap.set('i', '(', '()<left>', { noremap = true })
-vim.keymap.set('i', '[', '[]<left>', { noremap = true })
-vim.keymap.set('i', '{', '{}<left>', { noremap = true })
-vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', { noremap = true })
+vim.keymap.set('i', '(', '()<left>', opts)
+vim.keymap.set('i', '[', '[]<left>', opts)
+vim.keymap.set('i', '{', '{}<left>', opts)
+vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', opts)
