@@ -36,6 +36,10 @@ local on_attach = function(client, bufnr)
 		})
 	end
 
+	if client.name == 'rust_analyzer' then
+		vim.lsp.buf.inlay_hint(bufnr, true)
+	end
+
 	local opts = { noremap = true, silent = true }
 
 	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
@@ -44,7 +48,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
 	vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
 	vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
-	vim.keymap.set('n', '<Leader>a', ':CodeActionMenu<CR>', opts)
+	vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
 	vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
 	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
 	vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
@@ -95,9 +99,20 @@ local servers = {
 		}
 	},
 	tsserver = {
+		inlayHints = {
+			includeInlayParameterNameHints = 'all',
+			includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+			includeInlayFunctionParameterTypeHints = true,
+			includeInlayVariableTypeHints = true,
+			includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+			includeInlayPropertyDeclarationTypeHints = true,
+			includeInlayFunctionLikeReturnTypeHints = true,
+			includeInlayEnumMemberValueHints = true,
+		},
 		init_options = {
 			preferences = {
-				disableSuggestions = true
+				disableSuggestions = true,
+				importModuleSpecifierPreference = 'relative',
 			}
 		}
 	},
@@ -112,19 +127,3 @@ for lsp, config in pairs(servers) do
 
 	require 'lspconfig'[lsp].setup(config)
 end
-
-local null_ls = require 'null-ls'
-
-null_ls.setup({
-	sources = {
-		-- null_ls.builtins.diagnostics.eslint_d.with({
-		-- 	disabled_filetypes = { 'vue' },
-		-- 	-- command = "node_modules/.bin/eslint"
-		-- }),
-		null_ls.builtins.formatting.gofmt,
-		null_ls.builtins.formatting.prettier.with({
-			disabled_filetypes = { 'vue' },
-		}),
-	},
-	on_attach = on_attach,
-})
