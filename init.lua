@@ -48,7 +48,7 @@ vim.diagnostic.config({
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -66,19 +66,27 @@ require('lazy').setup({
 	'editorconfig/editorconfig-vim',
 	'christoomey/vim-tmux-navigator',
 	'tpope/vim-commentary',
+
+	{ 'MunifTanjim/nui.nvim' },
 	{
-		enabled = false,
-		'Lilja/zellij.nvim',
+		'mhartington/formatter.nvim',
 		config = function()
-			require('zellij').setup({
-				vimTmuxNavigatorKeybinds = true,
-			})
+			-- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
+			require("formatter").setup {
+				-- Enable or disable logging
+				logging = false,
+				-- Set the log level
+				log_level = vim.log.levels.WARN,
+			}
 		end
 	},
-	'MunifTanjim/nui.nvim',
-	'jose-elias-alvarez/null-ls.nvim',
-	{ 'github/copilot.vim',             enabled = true },
-	{ 'weilbith/nvim-code-action-menu', cmd = 'CodeActionMenu' },
+	{
+		'github/copilot.vim',
+		enabled = true,
+		config = function()
+			vim.g.copilot_filetypes = { typescript = true, typescriptreact = true, rust = false, go = false }
+		end
+	},
 	{
 		-- LSP Configuration & Plugins
 		'neovim/nvim-lspconfig',
@@ -89,28 +97,24 @@ require('lazy').setup({
 		},
 	},
 	{
-		'nvim-lualine/lualine.nvim',
+		"theHamsta/nvim-dap-virtual-text",
+		enabled = false,
 		config = function()
-			require 'lualine'.setup {
-				options = {
-					icons_enabled = false,
-					component_separators = '',
-					section_separators = ''
-				}
-			}
+			require("nvim-dap-virtual-text").setup({})
 		end
 	},
 	{
-		"theHamsta/nvim-dap-virtual-text",
+		"nvim-telescope/telescope-dap.nvim",
+		require = { "nvim-telescope/telescope.nvim" },
 		config = function()
-			require("nvim-dap-virtual-text").setup({})
+			require('telescope').load_extension('dap')
 		end
 	},
 	{
 		"mfussenegger/nvim-dap",
 		requires = { "nvim-dap-virtual-text" },
 		config = function()
-			vim.keymap.set("n", "<Leader>b",
+			vim.keymap.set("n", "<Leader>db",
 				function()
 					require 'dap'.toggle_breakpoint()
 				end,
@@ -158,26 +162,32 @@ require('lazy').setup({
 				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
 			}
 
-			require("dap").configurations.typescript = {
+			local dap = require("dap")
+
+			-- dap.defaults.fallback.external_terminal = {
+			-- 	command = "tmux",
+			-- 	args = { "splitw", "-h", "-p", "50" },
+			-- }
+
+			if vim.fn.winwidth(0) > 150 then
+				dap.defaults.fallback.terminal_win_cmd = 'split new'
+			else
+				dap.defaults.fallback.terminal_win_cmd = 'vsplit new'
+			end
+
+			dap.configurations.typescript = {
 				{
 					type = "pwa-node",
 					request = "launch",
 					name = "Start server",
-					program = "${file}",
-					cwd = "${workspaceFolder}",
+					protocol = "inspector",
+					cwd = vim.fn.getcwd(),
 					runtimeExecutable = "yarn",
-					console = "integratedTerminal",
 					runtimeArgs = {
 						"start:debug"
-					}
+					},
+					console = "integratedTerminal",
 				},
-				-- {
-				-- 	type = "pwa-node",
-				-- 	request = "attach",
-				-- 	name = "Attach",
-				-- 	processId = require("dap.utils").pick_process,
-				-- 	cwd = "${workspaceFolder}",
-				-- },
 				{
 					type = "pwa-node",
 					request = "launch",
@@ -212,7 +222,7 @@ require('lazy').setup({
 				end,
 				{ noremap = true })
 		end,
-		ft = "go"
+		ft = "go",
 	},
 	{ 'kevinhwang91/nvim-bqf', ft = 'qf' },
 	{ 'itchyny/vim-qfedit',    ft = 'qf' },
@@ -235,23 +245,21 @@ require('lazy').setup({
 				end,
 				{ noremap = true }
 			)
+
+			vim.keymap.set('n', '<Tab>',
+				function()
+					require("harpoon.ui").nav_next()
+				end,
+				{ noremap = true }
+			)
+
+			vim.keymap.set('n', '<S-Tab>',
+				function()
+					require("harpoon.ui").nav_prev()
+				end,
+				{ noremap = true }
+			)
 		end
-	},
-	{
-		'TimUntersberger/neogit',
-		enabled = false,
-		opts = {
-			disable_context_highlighting = true,
-			integrations = {
-				diffview = true
-			},
-			commit_popup = {
-				kind = "vsplit",
-			},
-			popup = {
-				kind = "vsplit",
-			}
-		}
 	},
 	{
 		'sindrets/diffview.nvim',
@@ -262,6 +270,34 @@ require('lazy').setup({
 				signs = {
 					fold_closed = "+",
 					fold_open = "-"
+				},
+				view = {
+					default = {
+						-- Config for changed files, and staged files in diff views.
+						layout = "diff2_horizontal",
+						winbar_info = false, -- See ':h diffview-config-view.x.winbar_info'
+					},
+					merge_tool = {
+						-- Config for conflicted files in diff views during a merge or rebase.
+						layout = "diff3_mixed",
+						disable_diagnostics = true, -- Temporarily disable diagnostics for conflict buffers while in the view.
+						winbar_info = false,  -- See ':h diffview-config-view.x.winbar_info'
+					},
+				},
+				file_panel = {
+					listing_style = "tree",      -- One of 'list' or 'tree'
+					tree_options = {             -- Only applies when listing_style is 'tree'
+						flatten_dirs = true,       -- Flatten dirs that only contain one single dir
+						folder_statuses = "only_folded", -- One of 'never', 'only_folded' or 'always'.
+					},
+					win_config = {               -- See ':h diffview-config-win_config'
+						position = "left",
+						width = 40,
+						win_opts = {}
+					},
+				},
+				default_args = {
+					DiffviewOpen = { "--imply-local" },
 				}
 			}
 
