@@ -8,6 +8,20 @@ return {
 	},
 	color_scheme = "togoro",
 	font = wezterm.font("Comic mono"),
+	font_rules = {
+		{
+			intensity = 'Normal',
+			font = wezterm.font('JetbrainsMono Nerd Font Mono', { weight = 500 })
+		},
+		{
+			intensity = 'Bold',
+			font = wezterm.font({
+				family = 'JetbrainsMono Nerd Font Mono',
+				weight = 'Bold',
+				italic = true,
+			}),
+		}
+	},
 	colors = {
 		cursor_bg = '#a6e3a1',
 	},
@@ -16,6 +30,6 @@ return {
 	animation_fps = 1,
 	-- cell_width = 0.9,
 	enable_tab_bar = false,
-	font_size = 19.0,
+	font_size = 18,
 	window_background_opacity = 0.95,
 }
