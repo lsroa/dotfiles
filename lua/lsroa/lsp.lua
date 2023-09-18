@@ -51,6 +51,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
 	vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
 	vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
+	vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
 	vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
 end
 
