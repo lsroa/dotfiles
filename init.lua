@@ -77,6 +77,11 @@ require('lazy').setup({
 				logging = false,
 				-- Set the log level
 				log_level = vim.log.levels.WARN,
+				filetype = {
+					typescriptreact = {
+						require("formatter.filetypes.typescriptreact").prettier,
+					}
+				}
 			}
 		end
 	},
@@ -97,13 +102,6 @@ require('lazy').setup({
 		},
 	},
 	{
-		"theHamsta/nvim-dap-virtual-text",
-		enabled = false,
-		config = function()
-			require("nvim-dap-virtual-text").setup({})
-		end
-	},
-	{
 		"nvim-telescope/telescope-dap.nvim",
 		require = { "nvim-telescope/telescope.nvim" },
 		config = function()
@@ -112,7 +110,6 @@ require('lazy').setup({
 	},
 	{
 		"mfussenegger/nvim-dap",
-		requires = { "nvim-dap-virtual-text" },
 		config = function()
 			vim.keymap.set("n", "<Leader>db",
 				function()
@@ -153,7 +150,9 @@ require('lazy').setup({
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
-		requires = { "mfussenegger/nvim-dap" },
+		requires = {
+			"mfussenegger/nvim-dap",
+		},
 		ft = "typescript",
 		config = function()
 			require("dap-vscode-js").setup {
@@ -211,7 +210,6 @@ require('lazy').setup({
 		"leoluz/nvim-dap-go",
 		requires = {
 			"mfussenegger/nvim-dap",
-			"nvim-dap-virtual-text"
 		},
 		config = function()
 			local dap_go = require('dap-go')
@@ -266,7 +264,7 @@ require('lazy').setup({
 		name = "diffview",
 		config = function()
 			require 'diffview'.setup {
-				use_icons = false,
+				use_icons = true,
 				signs = {
 					fold_closed = "+",
 					fold_open = "-"
