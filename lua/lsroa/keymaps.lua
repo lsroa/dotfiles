@@ -55,9 +55,6 @@ vim.keymap.set('n', "<Leader>s", ':sp<CR>', opts)
 -- Auto comment
 vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', opts)
 
--- Tree explorer
-vim.keymap.set('n', '<C-n>', ':NeoTreeFocusToggle<CR>', opts)
-vim.keymap.set('n', '<C-f>', ':NeoTreeFloatToggle<CR>', opts)
 
 vim.keymap.set('n', '<Leader>q', ':q<CR>', opts)
 vim.keymap.set('n', '<Leader>w', ':w<CR>', opts)
@@ -91,6 +88,8 @@ vim.keymap.set('n', '<Leader>tt', function()
 	for _, path in ipairs {
 		file_path .. '/__test__/' .. file_name .. ".test.ts",
 		file_path .. '/__test__/' .. file_name .. ".test.tsx",
+		file_path .. '/__tests__/' .. file_name .. ".test.ts",
+		file_path .. '/__tests__/' .. file_name .. ".test.tsx",
 		file_path .. '/' .. file_name .. ".test.ts",
 		file_path .. '/' .. file_name .. ".test.tsx",
 		file_path .. '/__test__/' .. file_name .. ".spec.tsx",
@@ -130,7 +129,7 @@ end, opts)
 -- Commands
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
 
-vim.api.nvim_create_user_command("CopyPath",
+vim.api.nvim_create_user_command("SharePath",
 	function()
 		local branch = string.gsub(vim.fn.system("git rev-parse --abbrev-ref HEAD"), "%s", "")
 		local base_path = string.gsub(vim.fn.system(" git rev-parse --show-toplevel "), "%s", "")
@@ -145,6 +144,11 @@ vim.api.nvim_create_user_command("CopyPath",
 
 		vim.fn.setreg("+", copy)
 	end, {})
+
+vim.api.nvim_create_user_command("CopyPath", function()
+	local path = vim.fn.expand("%:p")
+	vim.fn.setreg("+", path)
+end, {})
 
 vim.cmd([[
   inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
