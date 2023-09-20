@@ -17,18 +17,6 @@ return {
 				DiffAdd = {
 					bg = '#005f5f',
 				},
-				NeogitDiffAddRegion = {
-					bg = '#005f5f',
-				},
-				NeogitDiffAdd = {
-					bg = '#005f5f',
-				},
-				NeogitDiffDelete = {
-					bg = '#875f5f'
-				},
-				NeogitDiffDeleteRegion = {
-					bg = '#875f5f'
-				},
 				DiffDelete = {
 					bg = '#875f5f'
 				},
@@ -38,11 +26,11 @@ return {
 				DiffChange = {
 					bg = '#005f5f',
 				},
-				NeogitHunkHeader = {
-					bg = '#525252',
+				CursorLine = {
+					bg = '#181825',
 				},
-				NeoTreeGitUntracked = {
-					fg = '#F9E2AF'
+				LspInlayHint = {
+					link = 'Comment'
 				},
 				-- IndentBlankLineIndent1 = {
 				-- 	bg = '#222222'
@@ -52,6 +40,10 @@ return {
 				},
 				DapBreakpoint = {
 					fg = '#f7df1e'
+				},
+				WinSeparator = {
+					fg = '#45475a',
+					bg = 'None'
 				},
 				MatchParen = {
 					fg = 'none',
@@ -68,15 +60,9 @@ return {
 			transparent_background = true,
 			integrations = {
 				gitsigns = true,
-				neogit = true,
 				dap = true,
 				treesitter = true,
 				telescope = true,
-				neotree = {
-					enabled = true,
-					show_root = true,
-					transparent_panel = true
-				},
 			}
 		}
 

@@ -344,12 +344,12 @@ require("lsroa.autocmp")
 
 -- Signs
 local signs = {
-	DiagnosticSignError = 'E',
-	DiagnosticSignWarn = 'W',
-	DiagnosticSignHint = 'H',
-	DiagnosticSignInfo = 'I',
-	DapBreakpoint = 'B',
-	DapStopped = '*',
+	DiagnosticSignError = '',
+	DiagnosticSignWarn = '',
+	DiagnosticSignHint = '󰌶',
+	DiagnosticSignInfo = '',
+	DapBreakpoint = '',
+	DapStopped = '⇨',
 }
 
 for type, icon in pairs(signs) do
