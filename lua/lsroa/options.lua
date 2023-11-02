@@ -24,8 +24,8 @@ vim.o.hidden = true
 vim.o.mouse = 'a'
 
 -- Fold
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = "indent"
+vim.opt.fillchars = { eob = "-", fold = " " }
 vim.cmd("set foldlevel=9")
 
 -- Spaces and Tabs

@@ -58,6 +58,7 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', opts)
 
 vim.keymap.set('n', '<Leader>q', ':q<CR>', opts)
 vim.keymap.set('n', '<Leader>w', ':w<CR>', opts)
+vim.keymap.set({ 'n', 'v' }, '-', 'za<CR>', opts)
 
 vim.keymap.set('n', ']t', ':tabnext<CR>', opts)
 vim.keymap.set('n', '[t', ':tabprevious<CR>', opts)

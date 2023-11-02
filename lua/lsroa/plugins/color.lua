@@ -49,6 +49,9 @@ return {
 					fg = 'none',
 					bg = '#525252',
 				},
+				Folded = {
+					fg = '#45475a',
+				}
 				-- Search = {
 				-- 	fg = oxo.light_pink,
 				-- },
