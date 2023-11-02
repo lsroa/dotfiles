@@ -89,7 +89,14 @@ require('lazy').setup({
 		'github/copilot.vim',
 		enabled = true,
 		config = function()
-			vim.g.copilot_filetypes = { typescript = true, typescriptreact = true, rust = false, go = false }
+			vim.g.copilot_filetypes = {
+				typescript = true,
+				scala = false,
+				typescriptreact = true,
+				rust = false,
+				go = false,
+				cpp = false
+			}
 		end
 	},
 	{
@@ -111,33 +118,35 @@ require('lazy').setup({
 	{
 		"mfussenegger/nvim-dap",
 		config = function()
+			local dap = require('dap')
+
 			vim.keymap.set("n", "<Leader>db",
 				function()
-					require 'dap'.toggle_breakpoint()
+					dap.toggle_breakpoint()
 				end,
 				{ noremap = true })
 
 			vim.keymap.set("n", "<Leader>dc",
 				function()
-					require 'dap'.continue()
+					dap.continue()
 				end,
 				{ noremap = true })
 
 			vim.keymap.set("n", "<Leader>dr",
 				function()
-					require 'dap'.repl.open()
+					dap.repl.open()
 				end,
 				{ noremap = true })
 
 			vim.keymap.set("n", "]d",
 				function()
-					require 'dap'.step_over()
+					dap.step_over()
 				end,
 				{ noremap = true })
 
 			vim.keymap.set("n", "[d",
 				function()
-					require 'dap'.step_into()
+					dap.step_into()
 				end,
 				{ noremap = true })
 
@@ -146,6 +155,23 @@ require('lazy').setup({
 					require("dap.ui.widgets").hover()
 				end,
 				{ noremap = true })
+
+
+			dap.adapters.godot = {
+				type = "server",
+				host = '127.0.0.1',
+				port = 6006,
+			}
+
+			dap.configurations.gdscript = {
+				{
+					type = "godot",
+					request = "launch",
+					name = "Launch scene",
+					project = "${workspaceFolder}",
+					launch_scene = true,
+				}
+			}
 		end
 	},
 	{
@@ -205,6 +231,69 @@ require('lazy').setup({
 				},
 			}
 		end
+	},
+	{
+		'scalameta/nvim-metals',
+		as = 'metals',
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			local metals = require("metals")
+			local metals_config = metals.bare_config()
+			metals_config.settings = {
+				showImplicitArguments = true,
+			}
+			metals_config.init_options.statusBarProvider = "on"
+			metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local dap = require("dap")
+			dap.configurations.scala = {
+				{
+					type = "scala",
+					request = "launch",
+					name = "RunOrTest",
+					metals = {
+						runtType = "runOrTestFile",
+					},
+				},
+				{
+					type = "scala",
+					request = "launch",
+					name = "Test Target",
+					metals = {
+						runtType = "testTarget",
+					},
+				},
+			}
+
+			metals_config.on_attach = function()
+				local opts = { noremap = true, silent = true }
+				vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
+				vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
+				vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
+				vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
+				vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
+				vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
+				vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
+				vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
+				vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
+				vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
+				vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
+				metals.setup_dap()
+			end
+
+			vim.keymap.set("n", "<leader>lmc", function()
+				require("telescope").extensions.metals.commands()
+			end)
+
+
+			local nvim_metals_group = vim.api.nvim_create_augroup("metals", { clear = true })
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "scala", "sbt", "java" },
+				callback = function()
+					metals.initialize_or_attach(metals_config)
+				end,
+				group = nvim_metals_group,
+			})
+		end,
 	},
 	{
 		"leoluz/nvim-dap-go",
@@ -308,10 +397,16 @@ require('lazy').setup({
 		'lukas-reineke/indent-blankline.nvim',
 		-- Enable `lukas-reineke/indent-blankline.nvim`
 		-- See `:help indent_blankline.txt`
-		opts = {
-			char = '┊',
-			show_trailing_blankline_indent = false,
-		},
+		config = function()
+			require("ibl").setup({
+				indent = {
+					char = '┊',
+				},
+				scope = {
+					enabled = false
+				}
+			})
+		end,
 		enabled = true,
 	},
 	{ "rmagatti/auto-session", opts = { auto_save_enabled = true } },
