@@ -24,6 +24,10 @@ return {
 
 		require('nvim-tree').setup({
 			on_attach = on_attach,
+			renderer = {
+				icons = {
+					git_placement = "after" }
+			},
 			view = {
 				float = {
 					enable = true,
