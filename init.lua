@@ -311,8 +311,7 @@ require('lazy').setup({
 		end,
 		ft = "go",
 	},
-	{ 'kevinhwang91/nvim-bqf', ft = 'qf' },
-	{ 'itchyny/vim-qfedit',    ft = 'qf' },
+	{ 'itchyny/vim-qfedit',  ft = 'qf' },
 	{
 		'ThePrimeagen/harpoon',
 		dependencies = { 'nvim-lua/plenary.nvim' },

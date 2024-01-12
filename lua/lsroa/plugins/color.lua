@@ -32,9 +32,6 @@ return {
 				LspInlayHint = {
 					link = 'Comment'
 				},
-				-- IndentBlankLineIndent1 = {
-				-- 	bg = '#222222'
-				-- },
 				GitSignsDeleteLn = {
 					bg = '#875f5f'
 				},
@@ -51,13 +48,13 @@ return {
 				},
 				Folded = {
 					fg = '#45475a',
-				}
-				-- Search = {
-				-- 	fg = oxo.light_pink,
-				-- },
-				-- LspInlayHint = {
-				-- 	fg = oxo.gray,
-				-- },
+				},
+				NvimTreeOpenedFile = {
+					fg = '#cdd6f4',
+					style = {
+						'bold'
+					},
+				},
 			},
 			term_colors = true,
 			transparent_background = true,

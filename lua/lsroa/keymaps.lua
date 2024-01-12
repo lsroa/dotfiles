@@ -57,7 +57,7 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>/', ':Commentary<CR>', opts)
 
 
 vim.keymap.set('n', '<Leader>q', ':q<CR>', opts)
-vim.keymap.set('n', '<Leader>w', ':w<CR>', opts)
+vim.keymap.set('n', '<Leader>w', ':silent w<CR>', opts)
 vim.keymap.set({ 'n', 'v' }, '-', 'za<CR>', opts)
 
 vim.keymap.set('n', ']t', ':tabnext<CR>', opts)
@@ -65,27 +65,19 @@ vim.keymap.set('n', '[t', ':tabprevious<CR>', opts)
 vim.keymap.set({ 'n' }, '<Left>', '^', opts)
 vim.keymap.set({ 'n' }, '<Right>', '$', opts)
 
+vim.keymap.set('n', ']q', ':cnext<CR>', opts)
+vim.keymap.set('n', '[q', ':cprevious<CR>', opts)
+
 -- Dont yank on put
 vim.keymap.set('x', 'p', '"_dP', opts)
 
-vim.keymap.set('n', '<Leader>ff',
-	function()
-		require 'telescope.builtin'.find_files({
-			find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!*.meta' }
-		})
-	end,
-	opts
-)
-vim.keymap.set('n', '<Leader>fg', ':Telescope live_grep <CR>', opts)
-vim.keymap.set('n', '<Leader>fb', ':Telescope buffers <CR>', opts)
+
 vim.keymap.set('v', '>', '>gv', opts)
 vim.keymap.set('v', '<', '<gv', opts)
-vim.keymap.set('n', '<Leader>fh', ':Telescope help_tags<CR>', opts)
-
 
 vim.keymap.set('n', '<Leader>tt', function()
 	local file_path = vim.fn.expand("%:p:h")
-	local file_name = string.gsub(string.gsub(vim.fn.expand("%:t"), ".ts$", ""), ".tsx$", "")
+	local file_name = string.gsub(string.gsub(string(vim.fn.expand("%:t")), ".ts$", ""), ".tsx$", "")
 	for _, path in ipairs {
 		file_path .. '/__test__/' .. file_name .. ".test.ts",
 		file_path .. '/__test__/' .. file_name .. ".test.tsx",
@@ -125,6 +117,10 @@ vim.keymap.set('n', '<Leader>g', function()
 	os.execute("tmux split-window -h gg")
 end, opts)
 
+vim.keymap.set('n', '<Leader>tw', function()
+	local file_path = vim.fn.expand("%:p")
+	os.execute("tmux split-window -h " .. "npx jest --watch " .. file_path)
+end, opts)
 
 
 -- Commands

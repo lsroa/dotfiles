@@ -36,10 +36,6 @@ local on_attach = function(client, bufnr)
 		})
 	end
 
-	if client.name == 'rust_analyzer' then
-		vim.lsp.buf.inlay_hint(bufnr, true)
-	end
-
 	local opts = { noremap = true, silent = true }
 
 	vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
@@ -64,7 +60,17 @@ local servers = {
 	eslint = {},
 	-- csharp_ls = {},
 	prismals = {},
-	clangd = {},
+	clangd = {
+		cmd = {
+			"clangd",
+			"--background-index",
+			"--clang-tidy",
+			"--header-insertion=iwyu",
+			"--completion-style=detailed",
+			"--function-arg-placeholders",
+			"--fallback-style=llvm",
+		},
+	},
 	rust_analyzer = {
 		imports = {
 			granularity = {
@@ -81,7 +87,6 @@ local servers = {
 			enable = true
 		},
 	},
-	-- pyright = {},
 	lua_ls = {
 		settings = {
 			Lua = {

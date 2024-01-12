@@ -3,6 +3,7 @@ return {
 	config = function()
 		require 'nvim-web-devicons'.setup {
 			strict = true,
+			color_icons = true,
 			override_by_extension = {
 				["test.ts"] = {
 					icon = "",
@@ -29,11 +30,21 @@ return {
 					color = "#61DBFB",
 					name = "Ts",
 				},
-				['gd'] = {
+				["gd"] = {
 					icon = "",
 					name = "GDScript",
 					color = "#519aba",
-				}
+				},
+				['go'] = {
+					icon = "",
+					name = "Go",
+					color = "#00ADD8"
+				},
+				["test.go"] = {
+					icon = "",
+					color = "#f0db4f",
+					name = "SpecTs",
+				},
 			},
 		}
 	end

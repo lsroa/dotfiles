@@ -4,7 +4,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_preview = 1
 
-vim.wo.relativenumber = true
+vim.wo.relativenumber = false
 vim.wo.number = true
 vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
@@ -22,17 +22,20 @@ vim.o.incsearch = true
 vim.o.hlsearch = false
 vim.o.hidden = true
 vim.o.mouse = 'a'
+vim.o.ruler = false
+vim.o.showmode = false
+vim.o.showcmd = false
+vim.o.laststatus = 0
 
 -- Fold
 vim.opt.foldmethod = "indent"
-vim.opt.fillchars = { eob = "-", fold = " " }
+vim.opt.fillchars = { eob = "-", fold = " ", foldclose = ">" }
 vim.cmd("set foldlevel=9")
 
 -- Spaces and Tabs
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 
-vim.o.laststatus = 3
 vim.o.winbar = [[ %=%m %f ]]
 
 vim.o.swapfile = false
