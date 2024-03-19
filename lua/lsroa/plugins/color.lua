@@ -50,7 +50,7 @@ return {
 					fg = '#45475a',
 				},
 				NvimTreeOpenedFile = {
-					fg = '#cdd6f4',
+					fg = '#b4befe',
 					style = {
 						'bold'
 					},

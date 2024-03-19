@@ -1,0 +1,8 @@
+set shell fish
+set drawbox
+set hidden
+set icons
+set previewer bat
+map <enter> shell
+map H set hidden!
+map dd delete

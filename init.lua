@@ -80,6 +80,9 @@ require('lazy').setup({
 				filetype = {
 					typescriptreact = {
 						require("formatter.filetypes.typescriptreact").prettier,
+					},
+					typescript = {
+						require("formatter.filetypes.typescript").prettier,
 					}
 				}
 			}

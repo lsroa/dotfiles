@@ -10,7 +10,7 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
 	vim.lsp.handlers.hover, {
-		border = 'rounded',
+		border = 'single',
 	})
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -23,6 +23,9 @@ local lsp_formatting = function(bufnr)
 		-- async = true,
 	})
 end
+
+-- local group = vim.api.nvim_create_augroup("__formatter__", {})
+-- vim.api.nvim_create_autocmd("BufWritePre", { group = group, command = ":Format" })
 
 local on_attach = function(client, bufnr)
 	if client.supports_method('textDocument/formatting') then
@@ -53,12 +56,40 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
+--
+--
+local lspconfig = require 'lspconfig'
+local configs = require 'lspconfig.configs'
+if not configs.oxlint then
+	configs.oxlint = {
+		default_config = {
+			cmd = { 'oxlint', '.' },
+			root_dir = lspconfig.util.root_pattern('.git'),
+			filetypes = { 'typescript', 'typescriptreact' },
+		},
+	}
+end
+
 local servers = {
 	gopls = {},
 	gdscript = {},
 	zls = {},
+	arduino_language_server = {
+		cmd = {
+			"arduino-language-server",
+			"-cli-config",
+			os.getenv("HOME") .. ".arduinoIDE/arduino-cli.yaml",
+			"-fqbn",
+			"esp32:esp32:esp32",
+			"-cli",
+			"/opt/homebrew/bin/arduino-cli",
+			"-clangd",
+			"/opt/homebrew/opt/llvm/bin/clangd",
+		}
+	},
 	eslint = {},
-	-- csharp_ls = {},
+	ruff_lsp = {},
+	pyright = {},
 	prismals = {},
 	clangd = {
 		cmd = {

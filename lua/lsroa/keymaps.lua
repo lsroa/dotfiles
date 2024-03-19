@@ -7,8 +7,8 @@ vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', opts)
 vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', opts)
 vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', opts)
 vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', opts)
-vim.keymap.set('n', '<CR>', 'ciw', opts) -- toggle uppercase
 vim.keymap.set('n', '<Leader>uu', 'g~iw', opts)
+vim.keymap.set('n', '<Leader>F', ':Format<CR>', opts)
 
 vim.keymap.set('n', '<F6>', function()
 	local is_left = vim.api.nvim_win_get_position(0)[2] == 0
@@ -77,7 +77,7 @@ vim.keymap.set('v', '<', '<gv', opts)
 
 vim.keymap.set('n', '<Leader>tt', function()
 	local file_path = vim.fn.expand("%:p:h")
-	local file_name = string.gsub(string.gsub(string(vim.fn.expand("%:t")), ".ts$", ""), ".tsx$", "")
+	local file_name = string.gsub(string.gsub(tostring(vim.fn.expand("%:t")), ".ts$", ""), ".tsx$", "")
 	for _, path in ipairs {
 		file_path .. '/__test__/' .. file_name .. ".test.ts",
 		file_path .. '/__test__/' .. file_name .. ".test.tsx",
@@ -101,7 +101,7 @@ end, opts)
 
 
 vim.keymap.set('n', '<Leader>x', function()
-	local file_path = vim.fn.expand("%:p")
+	local file_path = tostring(vim.fn.expand("%:p"))
 	if vim.fn.winwidth(0) < 150 then
 		vim.cmd("split")
 	else
@@ -109,7 +109,7 @@ vim.keymap.set('n', '<Leader>x', function()
 	end
 
 	if vim.fn.filereadable(file_path) == 1 then
-		vim.cmd("terminal npx jest " .. file_path)
+		vim.cmd("terminal npx jest " .. file_path .. " --watch")
 	end
 end, opts)
 
@@ -133,7 +133,7 @@ vim.api.nvim_create_user_command("SharePath",
 
 		local repo = string.gsub(vim.fn.system([[git config --get remote.origin.url | rg -o ":(.*)\.git" -r '$1']]), "%s", "")
 
-		local file_path = string.sub(vim.fn.expand("%:p"), string.len(base_path) + 1)
+		local file_path = string.sub(tostring(vim.fn.expand("%:p")), string.len(base_path) + 1)
 		local line = vim.api.nvim_win_get_cursor(0)[1]
 
 		local copy = "https://github.com/" ..
