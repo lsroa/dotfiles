@@ -2,7 +2,10 @@ set shell fish
 set drawbox
 set hidden
 set icons
+set cursorpreviewfmt "\033[7m"
+
 set previewer bat
+
 map <enter> shell
 map H set hidden!
 map dd delete

@@ -1,6 +1,8 @@
+local M = {}
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+M.capabilities = capabilities
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 	vim.lsp.handlers.signature_help, {
@@ -53,6 +55,8 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
 	vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
 end
+
+M.on_attach = on_attach
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -166,3 +170,5 @@ for lsp, config in pairs(servers) do
 
 	require 'lspconfig'[lsp].setup(config)
 end
+
+return M

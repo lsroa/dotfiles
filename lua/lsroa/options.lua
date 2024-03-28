@@ -12,6 +12,7 @@ vim.wo.cursorline = true
 vim.o.scrolloff = 8
 vim.o.wrap = false
 
+vim.o.exrc = true
 vim.cmd([[set splitright]])
 vim.cmd([[set splitbelow]])
 vim.cmd([[set clipboard+=unnamedplus]])
