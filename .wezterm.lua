@@ -30,6 +30,5 @@ return {
 	animation_fps = 1,
 	-- cell_width = 0.9,
 	enable_tab_bar = false,
-	font_size = 18,
-	window_background_opacity = 0.95,
+	font_size = 16,
 }
