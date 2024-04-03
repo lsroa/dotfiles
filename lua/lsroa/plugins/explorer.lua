@@ -34,6 +34,12 @@ return {
 			renderer = {
 				icons = {
 					git_placement = "after",
+					glyphs = {
+						folder = {
+							open = "",
+							default = "",
+						},
+					}
 				},
 				highlight_git = true,
 				highlight_opened_files = "name",

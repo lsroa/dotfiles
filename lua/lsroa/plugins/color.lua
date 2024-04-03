@@ -49,11 +49,46 @@ return {
 				Folded = {
 					fg = '#45475a',
 				},
+				NvimTreeGitStaged = {
+					fg = "#005f5f"
+				},
+				NvimTreeModifiedFile = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFileMerge = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFileStaged = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFileRenamed = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFileDirty = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFolderName = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeGitMerge = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFolderStaged = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFolderDirty = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeNormal = {
+					bg = '#232325',
+					fg = '#a6adc8',
+				},
 				NvimTreeOpenedFile = {
-					fg = '#b4befe',
+					bg = '#232325',
+					fg = '#cad3f1',
 					style = {
 						'bold'
-					},
+					}
 				},
 			},
 			term_colors = true,
