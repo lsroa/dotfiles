@@ -236,69 +236,6 @@ require('lazy').setup({
 		end
 	},
 	{
-		'scalameta/nvim-metals',
-		as = 'metals',
-		requires = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local metals = require("metals")
-			local metals_config = metals.bare_config()
-			metals_config.settings = {
-				showImplicitArguments = true,
-			}
-			metals_config.init_options.statusBarProvider = "on"
-			metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local dap = require("dap")
-			dap.configurations.scala = {
-				{
-					type = "scala",
-					request = "launch",
-					name = "RunOrTest",
-					metals = {
-						runtType = "runOrTestFile",
-					},
-				},
-				{
-					type = "scala",
-					request = "launch",
-					name = "Test Target",
-					metals = {
-						runtType = "testTarget",
-					},
-				},
-			}
-
-			metals_config.on_attach = function()
-				local opts = { noremap = true, silent = true }
-				vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
-				vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
-				vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
-				vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
-				vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
-				vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
-				vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
-				vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
-				vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
-				vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
-				vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
-				metals.setup_dap()
-			end
-
-			vim.keymap.set("n", "<leader>lmc", function()
-				require("telescope").extensions.metals.commands()
-			end)
-
-
-			local nvim_metals_group = vim.api.nvim_create_augroup("metals", { clear = true })
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "scala", "sbt", "java" },
-				callback = function()
-					metals.initialize_or_attach(metals_config)
-				end,
-				group = nvim_metals_group,
-			})
-		end,
-	},
-	{
 		"leoluz/nvim-dap-go",
 		requires = {
 			"mfussenegger/nvim-dap",
