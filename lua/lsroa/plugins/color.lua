@@ -58,6 +58,9 @@ return {
 				NvimTreeFileMerge = {
 					link = 'NvimTreeNormal',
 				},
+				NvimTreeFileNew = {
+					link = 'NvimTreeNormal',
+				},
 				NvimTreeFileStaged = {
 					link = 'NvimTreeNormal',
 				},
@@ -71,6 +74,9 @@ return {
 					link = 'NvimTreeNormal',
 				},
 				NvimTreeGitMerge = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFolderOpened = {
 					link = 'NvimTreeNormal',
 				},
 				NvimTreeFolderStaged = {
