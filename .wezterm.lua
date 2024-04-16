@@ -31,4 +31,5 @@ return {
 	-- cell_width = 0.9,
 	enable_tab_bar = false,
 	font_size = 16,
+	line_height = 1.2,
 }
