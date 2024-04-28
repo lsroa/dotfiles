@@ -7,6 +7,7 @@ alias v='nvim'
 alias cat='bat'
 alias x="exit"
 alias gg="lazygit"
+alias c="clear"
 
 function config
 	v ~/.config/fish/config.fish
