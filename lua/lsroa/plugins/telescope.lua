@@ -65,22 +65,13 @@ return {
 
 		vim.keymap.set('n', '<Leader>ff',
 			function()
-				local width
-				if vim.fn.winwidth(0) < 150 then
-					width = 0.6
-				else
-					width = 0.45
-				end
+				local width = vim.fn.winwidth(0) < 150 and 0.6 or 0.45
 				require('telescope.builtin').find_files(require('telescope.themes').get_dropdown {
 					previewer = false,
 					layout_config = {
 						width = width,
 					},
-					path_display = function(_, path)
-						local tail = require("telescope.utils").path_tail(path)
-						return string.format("%s - %s", tail, path)
-					end,
-					find_command = { 'rg', '--files', '--hidden', '-g', '!.git', '-g', '!*.meta' },
+					path_display = { "filename_first" },
 				})
 			end,
 			opts
@@ -88,12 +79,22 @@ return {
 
 		vim.keymap.set('n', '<Leader>fg', function()
 			require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown {
-				previewer = false,
+				path_display = { "tail" },
 				layout_config = {
-					width = 0.7,
-				},
+					width = vim.fn.winwidth(0) > 150 and 0.4 or 0.5,
+				}
 			})
 		end, opts)
+
+		vim.keymap.set('n', '<Leader>fs', function()
+			require('telescope.builtin').git_status(require('telescope.themes').get_dropdown {
+				path_display = { "filename_first" },
+				previewer = false,
+			})
+		end, opts)
+
+		vim.keymap.set('n', '/', ':Telescope current_buffer_fuzzy_find<CR>', opts)
+
 		vim.keymap.set('n', '<Leader>fb', function()
 			require "telescope.builtin".buffers({
 				previewer = false,
