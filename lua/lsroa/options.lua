@@ -31,13 +31,12 @@ vim.o.laststatus = 0
 -- Fold
 vim.opt.foldmethod = "indent"
 vim.opt.fillchars = { eob = "-", fold = " ", foldclose = ">" }
+vim.opt.listchars = { tab = "⇥ ", trail = "·" }
+vim.opt.list = true
 vim.cmd("set foldlevel=9")
 
--- Spaces and Tabs
-vim.o.shiftwidth = 2
-vim.o.tabstop = 2
 
-vim.o.winbar = [[ %=%m %t ]]
+vim.o.winbar = [[ %=%m %f ]]
 vim.o.sessionoptions = "blank,buffers,curdir,winsize,winpos,terminal"
 
 vim.o.swapfile = false
