@@ -25,6 +25,9 @@ return {
 				enable = true,
 			},
 			filters = { custom = { "^.git$", "^node_modules", "^.yarn" } },
+			git = {
+				enable = false
+			},
 			view = {
 				width = {
 					min = 30,
