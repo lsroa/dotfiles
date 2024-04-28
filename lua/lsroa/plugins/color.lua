@@ -49,8 +49,14 @@ return {
 				Folded = {
 					fg = '#45475a',
 				},
+				WinBar = {
+					link = 'Comment',
+				},
 				NvimTreeGitStaged = {
 					fg = "#005f5f"
+				},
+				NvimTreeGitDirtyIcon = {
+					link = "NvimTreeFileDirtyHL"
 				},
 				NvimTreeModifiedFile = {
 					link = 'NvimTreeNormal',
@@ -59,6 +65,9 @@ return {
 					link = 'NvimTreeNormal',
 				},
 				NvimTreeFileNew = {
+					link = 'NvimTreeNormal',
+				},
+				NvimTreeFileDirtyHL = {
 					link = 'NvimTreeNormal',
 				},
 				NvimTreeFileStaged = {
@@ -100,6 +109,7 @@ return {
 			term_colors = true,
 			transparent_background = true,
 			integrations = {
+				neotree = false,
 				gitsigns = true,
 				dap = true,
 				treesitter = true,
