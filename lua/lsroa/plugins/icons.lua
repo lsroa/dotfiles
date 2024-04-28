@@ -18,17 +18,17 @@ return {
 				["test.tsx"] = {
 					icon = "",
 					color = "#f0db4f",
-					name = "SpecTs",
+					name = "SpecTsx",
 				},
 				["ts"] = {
 					icon = "",
-					color = "#519aba",
+					color = "#61DBFB",
 					name = "Ts",
 				},
 				["tsx"] = {
 					icon = "",
 					color = "#61DBFB",
-					name = "Ts",
+					name = "Tsx",
 				},
 				["gd"] = {
 					icon = "",
