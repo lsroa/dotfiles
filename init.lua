@@ -354,8 +354,8 @@ require('lazy').setup({
 		'hrsh7th/nvim-cmp',
 		dependencies = {
 			-- Snippet Engine & its associated nvim-cmp source
-			'L3MON4D3/LuaSnip',
-			'saadparwaiz1/cmp_luasnip',
+			-- 'L3MON4D3/LuaSnip',
+			-- 'saadparwaiz1/cmp_luasnip',
 
 			'hrsh7th/cmp-buffer',
 			'hrsh7th/cmp-cmdline',
@@ -364,7 +364,7 @@ require('lazy').setup({
 			'hrsh7th/cmp-nvim-lsp',
 
 			-- Adds a number of user-friendly snippets
-			'rafamadriz/friendly-snippets',
+			-- 'rafamadriz/friendly-snippets',
 		},
 	},
 	{ import = 'lsroa.plugins' },
