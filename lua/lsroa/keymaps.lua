@@ -7,49 +7,48 @@ vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', opts)
 vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', opts)
 vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', opts)
 vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', opts)
-vim.keymap.set('n', '<Leader>uu', 'g~iw', opts)
 vim.keymap.set('n', '<Leader>F', ':Format<CR>', opts)
 
 vim.keymap.set('n', '<F6>', function()
-	local is_left = vim.api.nvim_win_get_position(0)[2] == 0
-	if is_left then
-		vim.cmd('vertical resize -5')
-	else
-		vim.cmd('vertical resize +5')
-	end
+  local is_left = vim.api.nvim_win_get_position(0)[2] == 0
+  if is_left then
+    vim.cmd('vertical resize -5')
+  else
+    vim.cmd('vertical resize +5')
+  end
 end, opts)
 
 vim.keymap.set('n', '<F7>', function()
-	local is_top = vim.api.nvim_win_get_position(0)[1] == 0
-	if is_top then
-		vim.cmd('resize +5')
-	else
-		vim.cmd('resize -5')
-	end
+  local is_top = vim.api.nvim_win_get_position(0)[1] == 0
+  if is_top then
+    vim.cmd('resize +5')
+  else
+    vim.cmd('resize -5')
+  end
 end, opts)
 
 vim.keymap.set('n', '<F8>', function()
-	local is_top = vim.api.nvim_win_get_position(0)[1] == 0
-	if is_top then
-		vim.cmd('resize -5')
-	else
-		vim.cmd('resize +5')
-	end
+  local is_top = vim.api.nvim_win_get_position(0)[1] == 0
+  if is_top then
+    vim.cmd('resize -5')
+  else
+    vim.cmd('resize +5')
+  end
 end, opts)
 
 vim.keymap.set('n', '<F9>', function()
-	local is_left = vim.api.nvim_win_get_position(0)[2] == 0
-	if is_left then
-		vim.cmd('vertical resize +5')
-	else
-		vim.cmd('vertical resize -5')
-	end
+  local is_left = vim.api.nvim_win_get_position(0)[2] == 0
+  if is_left then
+    vim.cmd('vertical resize +5')
+  else
+    vim.cmd('vertical resize -5')
+  end
 end, opts)
 
 vim.keymap.set('n', '<c-w>l', '5<C-w>>', opts)
 vim.keymap.set('n', '<c-w>h', '5<C-w><', opts)
-vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
-vim.keymap.set('n', '<C-d>', '<C-d>zz', opts)
+vim.keymap.set('n', '<Up>', '<C-u>zz', opts)
+vim.keymap.set('n', '<Down>', '<C-d>zz', opts)
 vim.keymap.set('n', "<Leader>S", ':vs<CR>', opts)
 vim.keymap.set('n', "<Leader>s", ':sp<CR>', opts)
 -- Auto comment
@@ -76,50 +75,50 @@ vim.keymap.set('v', '>', '>gv', opts)
 vim.keymap.set('v', '<', '<gv', opts)
 
 vim.keymap.set('n', '<Leader>tt', function()
-	local file_path = vim.fn.expand("%:p:h")
-	local file_name = string.gsub(string.gsub(tostring(vim.fn.expand("%:t")), ".ts$", ""), ".tsx$", "")
-	for _, path in ipairs {
-		file_path .. '/__test__/' .. file_name .. ".test.ts",
-		file_path .. '/__test__/' .. file_name .. ".test.tsx",
-		file_path .. '/__tests__/' .. file_name .. ".test.ts",
-		file_path .. '/__tests__/' .. file_name .. ".test.tsx",
-		file_path .. '/' .. file_name .. ".test.ts",
-		file_path .. '/' .. file_name .. ".test.tsx",
-		file_path .. '/__test__/' .. file_name .. ".spec.tsx",
-		file_path .. '/__test__/' .. file_name .. ".spec.ts",
-	} do
-		print(path)
-		if vim.fn.filereadable(path) == 1 then
-			if vim.fn.winwidth(0) < 150 then
-				vim.cmd("split " .. path)
-			else
-				vim.cmd("vsplit " .. path)
-			end
-		end
-	end
+  local file_path = vim.fn.expand("%:p:h")
+  local file_name = string.gsub(string.gsub(tostring(vim.fn.expand("%:t")), ".ts$", ""), ".tsx$", "")
+  for _, path in ipairs {
+    file_path .. '/__test__/' .. file_name .. ".test.ts",
+    file_path .. '/__test__/' .. file_name .. ".test.tsx",
+    file_path .. '/__tests__/' .. file_name .. ".test.ts",
+    file_path .. '/__tests__/' .. file_name .. ".test.tsx",
+    file_path .. '/' .. file_name .. ".test.ts",
+    file_path .. '/' .. file_name .. ".test.tsx",
+    file_path .. '/__test__/' .. file_name .. ".spec.tsx",
+    file_path .. '/__test__/' .. file_name .. ".spec.ts",
+  } do
+    print(path)
+    if vim.fn.filereadable(path) == 1 then
+      if vim.fn.winwidth(0) < 150 then
+        vim.cmd("split " .. path)
+      else
+        vim.cmd("vsplit " .. path)
+      end
+    end
+  end
 end, opts)
 
 
 vim.keymap.set('n', '<Leader>x', function()
-	local file_path = tostring(vim.fn.expand("%:p"))
-	if vim.fn.winwidth(0) < 150 then
-		vim.cmd("split")
-	else
-		vim.cmd("vsplit")
-	end
+  local file_path = tostring(vim.fn.expand("%:p"))
+  if vim.fn.winwidth(0) < 150 then
+    vim.cmd("split")
+  else
+    vim.cmd("vsplit")
+  end
 
-	if vim.fn.filereadable(file_path) == 1 then
-		vim.cmd("terminal npx jest " .. file_path .. " --watch")
-	end
+  if vim.fn.filereadable(file_path) == 1 then
+    vim.cmd("terminal npx jest " .. file_path .. " --watch")
+  end
 end, opts)
 
 vim.keymap.set('n', '<Leader>g', function()
-	os.execute("tmux split-window -h gg")
+  os.execute("tmux split-window -h gg")
 end, opts)
 
 vim.keymap.set('n', '<Leader>tw', function()
-	local file_path = vim.fn.expand("%:p")
-	os.execute("tmux split-window -h " .. "npx jest --watch " .. file_path)
+  local file_path = vim.fn.expand("%:p")
+  os.execute("tmux split-window -h " .. "npx jest --watch " .. file_path)
 end, opts)
 
 
@@ -127,24 +126,24 @@ end, opts)
 vim.api.nvim_create_user_command("LspLog", "e $HOME/.cache/nvim/lsp.log", {})
 
 vim.api.nvim_create_user_command("SharePath",
-	function()
-		local branch = string.gsub(vim.fn.system("git rev-parse --abbrev-ref HEAD"), "%s", "")
-		local base_path = string.gsub(vim.fn.system(" git rev-parse --show-toplevel "), "%s", "")
+  function()
+    local branch = string.gsub(vim.fn.system("git rev-parse --abbrev-ref HEAD"), "%s", "")
+    local base_path = string.gsub(vim.fn.system(" git rev-parse --show-toplevel "), "%s", "")
 
-		local repo = string.gsub(vim.fn.system([[git config --get remote.origin.url | rg -o ":(.*)\.git" -r '$1']]), "%s", "")
+    local repo = string.gsub(vim.fn.system([[git config --get remote.origin.url | rg -o ":(.*)\.git" -r '$1']]), "%s", "")
 
-		local file_path = string.sub(tostring(vim.fn.expand("%:p")), string.len(base_path) + 1)
-		local line = vim.api.nvim_win_get_cursor(0)[1]
+    local file_path = string.sub(tostring(vim.fn.expand("%:p")), string.len(base_path) + 1)
+    local line = vim.api.nvim_win_get_cursor(0)[1]
 
-		local copy = "https://github.com/" ..
-				repo .. "/blob" .. "/" .. branch .. file_path .. "#L" .. line
+    local copy = "https://github.com/" ..
+        repo .. "/blob" .. "/" .. branch .. file_path .. "#L" .. line
 
-		vim.fn.setreg("+", copy)
-	end, {})
+    vim.fn.setreg("+", copy)
+  end, {})
 
 vim.api.nvim_create_user_command("CopyPath", function()
-	local path = vim.fn.expand("%:p")
-	vim.fn.setreg("+", path)
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
 end, {})
 
 vim.cmd([[
@@ -157,10 +156,10 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd("VimResized", {
-	pattern = "*",
-	callback = function()
-		vim.cmd("wincmd =")
-	end
+  pattern = "*",
+  callback = function()
+    vim.cmd("wincmd =")
+  end
 })
 
 vim.keymap.set('i', '(', '()<left>', opts)
