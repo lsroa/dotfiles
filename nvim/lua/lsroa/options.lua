@@ -8,6 +8,7 @@ vim.wo.relativenumber = false
 vim.wo.number = true
 vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
+vim.o.filetype = "on"
 
 vim.o.scrolloff = 8
 vim.o.wrap = false

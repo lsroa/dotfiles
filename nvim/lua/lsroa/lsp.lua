@@ -1,7 +1,6 @@
 local M = {}
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 M.capabilities = capabilities
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
@@ -26,9 +25,6 @@ local lsp_formatting = function(bufnr)
   })
 end
 
--- local group = vim.api.nvim_create_augroup("__formatter__", {})
--- vim.api.nvim_create_autocmd("BufWritePre", { group = group, command = ":Format" })
-
 local on_attach = function(client, bufnr)
   if client.supports_method('textDocument/formatting') then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
@@ -47,8 +43,8 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
   vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
-  vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
-  vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
+  vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
+  vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
   vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
   vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
   vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
@@ -77,24 +73,10 @@ end
 local servers = {
   gopls = {},
   gdscript = {},
-  zls = {},
-  arduino_language_server = {
-    cmd = {
-      "arduino-language-server",
-      "-cli-config",
-      os.getenv("HOME") .. ".arduinoIDE/arduino-cli.yaml",
-      "-fqbn",
-      "esp32:esp32:esp32",
-      "-cli",
-      "/opt/homebrew/bin/arduino-cli",
-      "-clangd",
-      "/opt/homebrew/opt/llvm/bin/clangd",
-    }
-  },
   eslint = {},
   ruff_lsp = {},
-  pyright = {},
   prismals = {},
+  tailwindcss = {},
   clangd = {
     cmd = {
       "clangd",
@@ -104,22 +86,6 @@ local servers = {
       "--completion-style=detailed",
       "--function-arg-placeholders",
       "--fallback-style=llvm",
-    },
-  },
-  rust_analyzer = {
-    imports = {
-      granularity = {
-        group = "module",
-      },
-      prefix = "self",
-    },
-    cargo = {
-      buildScripts = {
-        enable = true,
-      },
-    },
-    procMacro = {
-      enable = true
     },
   },
   lua_ls = {

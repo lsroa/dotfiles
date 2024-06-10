@@ -48,7 +48,7 @@ vim.diagnostic.config({
 
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -60,7 +60,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
 require('lazy').setup({
 
   'editorconfig/editorconfig-vim',
@@ -70,32 +69,37 @@ require('lazy').setup({
   { 'MunifTanjim/nui.nvim' },
   {
     'mhartington/formatter.nvim',
+    dependencies = {
+      {
+        -- LSP Configuration & Plugins
+        'neovim/nvim-lspconfig',
+        dependencies = {
+          -- Automatically install LSPs to stdpath for neovim
+          { 'williamboman/mason.nvim', config = true },
+          'williamboman/mason-lspconfig.nvim',
+        },
+      },
+    },
     config = function()
+      local lspconfig = require("lspconfig")
       -- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-      require("formatter").setup {
+
+      require("formatter").setup({
         -- Enable or disable logging
         logging = false,
         -- Set the log level
         log_level = vim.log.levels.WARN,
         filetype = {
           typescriptreact = {
-            require("formatter.filetypes.typescriptreact").prettier,
+            -- require("formatter.filetypes.typescriptreact").prettier,
+            require("formatter.filetypes.typescriptreact").biome,
           },
           typescript = {
             require("formatter.filetypes.typescript").prettier,
           }
         }
-      }
+      })
     end
-  },
-  {
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
-    },
   },
   {
     "nvim-telescope/telescope-dap.nvim",
@@ -117,9 +121,9 @@ require('lazy').setup({
 
       vim.keymap.set("n", "<Leader>dc",
         function()
-          if vim.fn.filereadable(".vscode/launch.json") then
-            -- require("dap.ext.vscode").load_launchjs(nil, { node = { "typescript" } })
-          end
+          -- if vim.fn.filereadable(".vscode/launch.json") then
+          -- require("dap.ext.vscode").load_launchjs(nil, { node = { "typescript" } })
+          -- end
           vim.print(require("dap").adapters)
           dap.continue()
         end,
@@ -332,6 +336,13 @@ require('lazy').setup({
     end,
     enabled = true,
   },
+  {
+    {
+      "luckasRanarison/tailwind-tools.nvim",
+      dependencies = { "nvim-treesitter/nvim-treesitter" },
+      opts = {} -- your configuration
+    }
+  },
   { "rmagatti/auto-session", opts = { auto_save_enabled = true } },
   {
     -- Autocompletion
@@ -340,10 +351,74 @@ require('lazy').setup({
 
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-path',
 
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
     },
+    config = function()
+      local has_words_before = function()
+        local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+
+      -- Edit Snippets
+
+      local cmp = require 'cmp'
+
+      cmp.setup({
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
+        mapping = cmp.mapping.preset.insert {
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<cr>"] = cmp.mapping.confirm(),
+          ["<Down>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<Up>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        },
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = "path" }
+        }, {
+          { name = 'buffer' },
+        })
+      })
+
+      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline' }
+        })
+      })
+    end
+    ,
   },
   { import = 'lsroa.plugins' },
 })
@@ -352,18 +427,3 @@ require("lsroa.keymaps")
 require("lsroa.globals")
 require("lsroa.options")
 require("lsroa.lsp")
-require("lsroa.autocmp")
-
--- Signs
-local signs = {
-  DiagnosticSignError = '',
-  DiagnosticSignWarn = '',
-  DiagnosticSignHint = '󰌶',
-  DiagnosticSignInfo = '',
-  DapBreakpoint = '',
-  DapStopped = '⇨',
-}
-
-for type, icon in pairs(signs) do
-  vim.fn.sign_define(type, { text = icon, texthl = type, numhl = type })
-end
