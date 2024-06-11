@@ -56,19 +56,6 @@ M.on_attach = on_attach
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
---
---
-local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig.configs'
-if not configs.oxlint then
-  configs.oxlint = {
-    default_config = {
-      cmd = { 'oxlint', '.' },
-      root_dir = lspconfig.util.root_pattern('.git'),
-      filetypes = { 'typescript', 'typescriptreact' },
-    },
-  }
-end
 
 local servers = {
   gopls = {},
