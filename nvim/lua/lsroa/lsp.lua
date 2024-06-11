@@ -60,7 +60,17 @@ M.on_attach = on_attach
 local servers = {
   gopls = {},
   gdscript = {},
-  eslint = {},
+  eslint = {
+    settings = {
+      experimental = { useFlatConfig = false },
+    },
+    on_attach = function(_, bufnr)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        command = "EslintFixAll",
+      })
+    end
+  },
   ruff_lsp = {},
   prismals = {},
   tailwindcss = {},
