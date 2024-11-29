@@ -52,50 +52,17 @@ return {
         WinBar = {
           link = 'Comment',
         },
-        NvimTreeGitStaged = {
-          fg = "#005f5f"
+        NvimTreeGitModifiedIcon = {
+          fg = "#f9e2af"
         },
-        NvimTreeGitDirtyIcon = {
-          link = "NvimTreeFileDirtyHL"
+        NvimTreeFolderName = {
+          link = "Normal"
+        },
+        NvimTreeGitStagedIcon = {
+          fg = "#a6e3a1"
         },
         NvimTreeOpenedHL = {
           link = "NvimTreeOpenedFile"
-        },
-        NvimTreeModifiedFile = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileMerge = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileNew = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileDirtyHL = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileStaged = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileRenamed = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFileDirty = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFolderName = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeGitMerge = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFolderOpened = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFolderStaged = {
-          link = 'NvimTreeNormal',
-        },
-        NvimTreeFolderDirty = {
-          link = 'NvimTreeNormal',
         },
         NvimTreeNormal = {
           bg = '#232325',

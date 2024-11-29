@@ -1,3 +1,13 @@
+vim.lsp.util.apply_text_document_edit = function(text_document_edit, index, offset_encoding)
+  local text_document = text_document_edit.textDocument
+  local bufnr = vim.uri_to_bufnr(text_document.uri)
+  if offset_encoding == nil then
+    vim.notify_once('apply_text_document_edit must be called with valid offset encoding', vim.log.levels.WARN)
+  end
+
+  vim.lsp.util.apply_text_edits(text_document_edit.edits, bufnr, offset_encoding)
+end
+
 local M = {}
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -6,12 +16,11 @@ M.capabilities = capabilities
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
   vim.lsp.handlers.signature_help, {
     border = 'rounded',
-    close_events = { "BufHidden", "InsertLeave" },
   })
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
   vim.lsp.handlers.hover, {
-    border = 'single',
+    border = 'rounded',
   })
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -43,8 +52,8 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
   vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
-  vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-  vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+  vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
+  vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
   vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
   vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
   vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
@@ -71,9 +80,9 @@ local servers = {
       })
     end
   },
-  ruff_lsp = {},
+  pyright = {},
   prismals = {},
-  tailwindcss = {},
+  glsl_analyzer = {},
   clangd = {
     cmd = {
       "clangd",
@@ -95,7 +104,10 @@ local servers = {
           globals = { 'vim' },
         },
         workspace = {
-          library = vim.api.nvim_get_runtime_file("", true),
+          library = {
+            vim.api.nvim_get_runtime_file("", true),
+            "${3rd}/love2d/library"
+          },
           checkThirdParty = false,
         },
         telemetry = {
@@ -118,7 +130,6 @@ local servers = {
     init_options = {
       preferences = {
         disableSuggestions = true,
-        importModuleSpecifierPreference = 'relative',
       }
     },
     commands = {

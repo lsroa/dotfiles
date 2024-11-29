@@ -9,6 +9,7 @@ vim.wo.number = true
 vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
 vim.o.filetype = "on"
+vim.g.autoread = true
 
 vim.o.scrolloff = 8
 vim.o.wrap = false

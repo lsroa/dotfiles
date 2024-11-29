@@ -100,16 +100,32 @@ end, opts)
 
 
 vim.keymap.set('n', '<Leader>x', function()
-  local file_path = tostring(vim.fn.expand("%:p"))
-  if vim.fn.winwidth(0) < 150 then
-    vim.cmd("split")
-  else
-    vim.cmd("vsplit")
-  end
+  local cmd = {
+    "jq", "-r", ".scripts| to_entries | map(.key)", "package.json"
+  }
+  local obj = vim.system(cmd, { text = true }):wait()
 
-  if vim.fn.filereadable(file_path) == 1 then
-    vim.cmd("terminal npx jest " .. file_path .. " --watch")
-  end
+  ---@type  string[]
+  local entries = vim.json.decode(obj.stdout)
+
+  vim.ui.select(entries, {
+    prompt = 'Run package.json script:',
+    format_item = function(item)
+      return item
+    end
+  }, function(choice)
+    if (choice == nil) then
+      return
+    end
+
+    local file_path = tostring(vim.fn.expand("%:p"))
+    if vim.fn.winwidth(0) < 150 then
+      vim.cmd("split")
+    else
+      vim.cmd("vsplit")
+    end
+    vim.cmd("terminal" .. " npm run " .. choice .. " " .. file_path)
+  end)
 end, opts)
 
 vim.keymap.set('n', '<Leader>g', function()

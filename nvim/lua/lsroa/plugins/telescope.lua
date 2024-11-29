@@ -65,7 +65,7 @@ return {
 
     vim.keymap.set('n', '<Leader>ff',
       function()
-        local width = vim.fn.winwidth(0) < 150 and 0.6 or 0.45
+        local width = vim.fn.winwidth(0) < 150 and 0.5 or 0.45
         require('telescope.builtin').find_files(require('telescope.themes').get_dropdown {
           previewer = false,
           layout_config = {
