@@ -61,7 +61,7 @@ return {
 
     local opts = { noremap = true, silent = true }
 
-    vim.keymap.set("n", "<space>o", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", opts)
+    vim.keymap.set("n", "<Leader>o", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", opts)
 
     vim.keymap.set('n', '<Leader>ff',
       function()
@@ -91,12 +91,6 @@ return {
         path_display = { "filename_first" },
         previewer = false,
       })
-    end, opts)
-
-    vim.keymap.set('n', '/', function()
-      require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-        path_display = { "filename_first" },
-      }))
     end, opts)
 
     vim.keymap.set('n', '<Leader>fb', function()

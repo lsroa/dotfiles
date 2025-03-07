@@ -13,15 +13,6 @@ local M = {}
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 M.capabilities = capabilities
 
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, {
-    border = 'rounded',
-  })
-
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover, {
-    border = 'rounded',
-  })
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
@@ -52,13 +43,13 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
   vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
-  vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
-  vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-  vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
+  vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
+  vim.keymap.set('n', '<Leader>a', function() vim.lsp.buf.code_action() end, opts)
   vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
-  vim.keymap.set('n', 'gd', function() require 'telescope.builtin'.lsp_definitions() end, opts)
-  vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
+  vim.keymap.set('n', 'gD', function() vim.lsp.buf.type_definition() end, opts)
+  vim.keymap.set('n', '<Leader>rf', function() vim.lsp.buf.references() end, opts)
 end
 
 M.on_attach = on_attach
@@ -68,7 +59,7 @@ M.on_attach = on_attach
 
 local servers = {
   gopls = {},
-  gdscript = {},
+  -- gdscript = {},
   eslint = {
     settings = {
       experimental = { useFlatConfig = false },
@@ -80,7 +71,20 @@ local servers = {
       })
     end
   },
-  pyright = {},
+  basedpyright = {
+    settings = {
+      basedpyright = {
+        analysis = {
+          typeCheckingMode = "strict",
+          useLibraryCodeForTypes = true,
+          extraPaths = {
+            "./src",
+            vim.fn.getcwd() .. "/venv/lib/python3.10/site-packages/django-types",
+          }
+        }
+      }
+    }
+  },
   prismals = {},
   glsl_analyzer = {},
   clangd = {
@@ -116,7 +120,7 @@ local servers = {
       }
     }
   },
-  tsserver = {
+  ts_ls = {
     inlayHints = {
       includeInlayParameterNameHints = 'all',
       includeInlayParameterNameHintsWhenArgumentMatchesName = false,

@@ -98,6 +98,48 @@ return {
     end
   },
   {
+    'mfussenegger/nvim-dap-python',
+    ft = "python",
+    requires = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require('dap-python').setup()
+
+      local pythonAttachConfig = {
+        type = "python",
+        request = "attach",
+        connect = {
+          port = 5678,
+          host = "0.0.0.0",
+        },
+        mode = "remote",
+        name = "Container Attach (with choose remote dir)",
+        cwd = vim.fn.getcwd(),
+        pathMappings = {
+          {
+            localRoot = vim.fn.getcwd(),
+            remoteRoot = "/app",
+          },
+        },
+      }
+      table.insert(require("dap").configurations.python, pythonAttachConfig)
+      local signs = {
+        { text = "DapBreakpoint", icon = "💔" },
+        { text = "DapStopped", icon = '👉' },
+      }
+
+      for _, sign in pairs(signs) do
+        vim.fn.sign_define(sign.text, {
+          text = sign.icon,
+          texthl = sign.text,
+          linehl = "",
+          numhl = ""
+        })
+      end
+    end
+  },
+  {
     "mxsdev/nvim-dap-vscode-js",
     requires = {
       "mfussenegger/nvim-dap",

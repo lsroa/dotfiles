@@ -14,6 +14,42 @@ return {
 
     require('catppuccin').setup {
       custom_highlights = {
+        healthError = {
+          link = "Normal"
+        },
+        NormalFloat = {
+          bg = '#181825',
+        },
+        ["@error"] = {
+          link = "Normal"
+        },
+        DiagnosticUnderlineError = {
+          link = "Normal"
+        },
+        LspDiagnosticsVirtualTextError = {
+          link = "Normal"
+        },
+        LspDiagnosticsDefaultError = {
+          link = "Normal"
+        },
+        LspDiagnosticDefaultError = {
+          link = "Normal"
+        },
+        LspDiagnosticsError = {
+          link = "Normal"
+        },
+        DiagnosticVirtualTextError = {
+          link = "Normal"
+        },
+        DiagnosticDefaultError = {
+          link = "Normal"
+        },
+        LspDiagnosticError = {
+          link = "Normal"
+        },
+        DiagnosticError = {
+          link = "Normal"
+        },
         DiffAdd = {
           bg = '#005f5f',
         },
@@ -27,7 +63,7 @@ return {
           bg = '#005f5f',
         },
         CursorLine = {
-          bg = '#181825',
+          bg = '#11111b',
         },
         LspInlayHint = {
           link = 'Comment'

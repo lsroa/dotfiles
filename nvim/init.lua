@@ -73,41 +73,49 @@ require('lazy').setup({
   'christoomey/vim-tmux-navigator',
   'tpope/vim-commentary',
   {
-    disabled = true,
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      require("copilot").setup({
-        suggestion = { enabled = false, debounce = 0 },
-        panel = { enabled = false },
-        filetypes = {
-          cpp = false
-        }
-      })
-    end
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = {
-      "hrsh7th/nvim-cmp"
-    },
-    config = function()
-      require("copilot_cmp").setup()
+      require("supermaven-nvim").setup({})
     end,
   },
   {
-    "karb94/neoscroll.nvim",
-    enabled = false,
+    "olimorris/codecompanion.nvim",
     config = function()
-      require('neoscroll').setup({})
-    end
+      require("codecompanion").setup({
+        strategies = {
+          chat = {
+            adapter = "deepseek",
+          }
+        },
+        adapters = {
+          deepseek = function()
+            return require("codecompanion.adapters").extend("openai_compatible", {
+              name = "deepseek",
+              env = {
+                url = "http://localhost:52415",
+                chat_url = "/v1/chat/completions",
+              },
+              schema = {
+                model = {
+                  default = "deepseek-coder-v2-lite",
+                }
+              },
+            })
+          end,
+        },
+      })
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+
   },
   {
-    "sphamba/smear-cursor.nvim",
-    opts = {
-      smear_between_neighbor_lines = false,
-    },
+    "junegunn/fzf.vim",
+    dependencies = {
+      "junegunn/fzf",
+    }
   },
   { 'MunifTanjim/nui.nvim' },
   {
@@ -124,6 +132,14 @@ require('lazy').setup({
       },
     },
     config = function()
+      local augroup = vim.api.nvim_create_augroup
+      local autocmd = vim.api.nvim_create_autocmd
+      augroup("__formatter__", { clear = true })
+      autocmd("BufWritePost", {
+        group = "__formatter__",
+        command = ":FormatWrite",
+      })
+
       require("formatter").setup({
         -- Enable or disable logging
         logging = false,
@@ -139,7 +155,30 @@ require('lazy').setup({
           },
           sql = {
             require("formatter.filetypes.sql").sql_formatter,
+          },
+          python = {
+            require("formatter.filetypes.python").black,
           }
+        }
+      })
+    end
+  },
+  {
+    "nvimtools/none-ls.nvim",
+    enabled = false,
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.diagnostics.mypy.with({
+            filetypes = { "python" },
+            extra_args = function()
+              return {
+                "--python-executable=" .. vim.fn.getcwd() .. "/venv/bin/python3",
+                "--config-file=" .. vim.fn.getcwd() .. "/pyproject.toml",
+              }
+            end,
+          })
         }
       })
     end
@@ -238,7 +277,6 @@ require('lazy').setup({
     end,
     enabled = true,
   },
-  { "rmagatti/auto-session", opts = { auto_save_enabled = true } },
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -256,8 +294,6 @@ require('lazy').setup({
         local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
       end
-
-      -- Edit Snippets
 
       local cmp = require 'cmp'
 
@@ -286,9 +322,7 @@ require('lazy').setup({
           end, { "i", "s" }),
         },
         sources = cmp.config.sources({
-          { name = "copilot" },
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
           { name = "path" }
         }, {
           { name = 'buffer' },
@@ -335,19 +369,3 @@ vim.diagnostic.config({
     },
   },
 })
-
-local signs = {
-  { text = "DapBreakpoint", icon = "💔" },
-  { text = "DapStopped", icon = '👉' },
-}
-
-
-
-for _, sign in pairs(signs) do
-  vim.fn.sign_define(sign.text, {
-    text = sign.icon,
-    texthl = sign.text,
-    linehl = "",
-    numhl = ""
-  })
-end
