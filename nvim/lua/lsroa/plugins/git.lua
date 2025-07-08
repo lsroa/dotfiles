@@ -35,7 +35,11 @@ return {
         map('n', '<Leader>hS', gs.stage_buffer)
         map('n', '<Leader>hu', gs.undo_stage_hunk)
         map('n', '<Leader>hR', gs.reset_buffer)
-        map('n', '<Leader>hp', gs.preview_hunk)
+        map('n', '<Leader>hp', function()
+          gs.toggle_word_diff()
+          gs.toggle_deleted()
+          gs.toggle_linehl()
+        end)
         map('n', '<Leader>ht',
           function()
             gs.toggle_linehl()

@@ -3,7 +3,7 @@ return {
   name = "catppuccin",
   dependencies = {
     {
-      'norcalli/nvim-colorizer.lua',
+      'catgoose/nvim-colorizer.lua',
       name = "colorizer"
     }
   },
@@ -25,6 +25,9 @@ return {
         },
         DiagnosticUnderlineError = {
           link = "Normal"
+        },
+        DiagnosticUnderlineWarn = {
+          style = {}
         },
         LspDiagnosticsVirtualTextError = {
           link = "Normal"
@@ -85,6 +88,11 @@ return {
         Folded = {
           fg = '#45475a',
         },
+        ["@lsp.type.method"] = {
+          style = {
+            'bold'
+          }
+        },
         WinBar = {
           link = 'Comment',
         },
@@ -123,7 +131,15 @@ return {
       }
     }
 
-    require 'colorizer'.setup()
+    require 'colorizer'.setup({
+      filetypes = {
+        sass = { enable = true, parser = { "css" } },
+      },
+      user_default_options = {
+        css = true,
+        rgb_fn = true,
+      },
+    })
 
     vim.cmd([[
 			set termguicolors
