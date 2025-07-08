@@ -6,3 +6,4 @@ ln -sf $(pwd)/lf $HOME/.config
 ln -sf $(pwd)/bat $HOME/.config
 ln -sf $(pwd)/lazygit $HOME/.config
 ln -sf $(pwd)/fish $HOME/.config
+ln -sf $(pwd)/zellij $HOME/.config

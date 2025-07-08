@@ -3,10 +3,10 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('i', 'jk', '<Esc>', opts)
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', opts)
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', opts)
-vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<CR>', opts)
-vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<CR>', opts)
-vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<CR>', opts)
-vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<CR>', opts)
+vim.keymap.set('n', '<c-h>', '<c-w>h', opts)
+vim.keymap.set('n', '<c-j>', '<c-w>j', opts)
+vim.keymap.set('n', '<c-k>', '<c-w>k', opts)
+vim.keymap.set('n', '<c-l>', '<c-w>l', opts)
 vim.keymap.set('n', '<Leader>F', ':Format<CR>', opts)
 
 vim.keymap.set('n', '<F6>', function()
@@ -64,8 +64,8 @@ vim.keymap.set('n', '[t', ':tabprevious<CR>', opts)
 vim.keymap.set({ 'n' }, '<Left>', '^', opts)
 vim.keymap.set({ 'n' }, '<Right>', '$', opts)
 
-vim.keymap.set('n', ']q', ':cnext<CR>', opts)
-vim.keymap.set('n', '[q', ':cprevious<CR>', opts)
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>', opts)
+vim.keymap.set('n', '[q', '<cmd>cprevious<CR>', opts)
 
 -- Dont yank on put
 vim.keymap.set('x', 'p', '"_dP', opts)
@@ -102,6 +102,11 @@ end, {})
 vim.api.nvim_create_user_command("OpenPyCharm", function()
   local path = vim.fn.expand("%:p")
   vim.fn.system("open -a PyCharm " .. path)
+end, {})
+
+vim.api.nvim_create_user_command("OpenCursor", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.system("open -a cursor " .. path)
 end, {})
 
 vim.cmd([[

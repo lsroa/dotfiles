@@ -68,55 +68,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-
+  change_detection = { notify = false },
   'editorconfig/editorconfig-vim',
-  'christoomey/vim-tmux-navigator',
   'tpope/vim-commentary',
-  {
-    "supermaven-inc/supermaven-nvim",
-    config = function()
-      require("supermaven-nvim").setup({})
-    end,
-  },
-  {
-    "olimorris/codecompanion.nvim",
-    config = function()
-      require("codecompanion").setup({
-        strategies = {
-          chat = {
-            adapter = "deepseek",
-          }
-        },
-        adapters = {
-          deepseek = function()
-            return require("codecompanion.adapters").extend("openai_compatible", {
-              name = "deepseek",
-              env = {
-                url = "http://localhost:52415",
-                chat_url = "/v1/chat/completions",
-              },
-              schema = {
-                model = {
-                  default = "deepseek-coder-v2-lite",
-                }
-              },
-            })
-          end,
-        },
-      })
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
-
-  },
-  {
-    "junegunn/fzf.vim",
-    dependencies = {
-      "junegunn/fzf",
-    }
-  },
   { 'MunifTanjim/nui.nvim' },
   {
     'mhartington/formatter.nvim',
@@ -147,8 +101,7 @@ require('lazy').setup({
         log_level = vim.log.levels.WARN,
         filetype = {
           typescriptreact = {
-            -- require("formatter.filetypes.typescriptreact").prettier,
-            require("formatter.filetypes.typescriptreact").biome,
+            require("formatter.filetypes.typescriptreact").prettier,
           },
           typescript = {
             require("formatter.filetypes.typescript").prettier,
@@ -158,32 +111,48 @@ require('lazy').setup({
           },
           python = {
             require("formatter.filetypes.python").black,
-          }
+          },
+          html = {
+            require("formatter.filetypes.html").prettier,
+          },
+          scss = {
+            require("formatter.filetypes.css").prettier,
+          },
         }
       })
     end
   },
   {
-    "nvimtools/none-ls.nvim",
+    'mfussenegger/nvim-lint',
     enabled = false,
     config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.diagnostics.mypy.with({
-            filetypes = { "python" },
-            extra_args = function()
-              return {
-                "--python-executable=" .. vim.fn.getcwd() .. "/venv/bin/python3",
-                "--config-file=" .. vim.fn.getcwd() .. "/pyproject.toml",
-              }
-            end,
-          })
-        }
+      require("lint").linters_by_ft = {
+        html = { "htmlhint" },
+        scss = { "stylelint" },
+      }
+
+      vim.api.nvim_create_user_command("Lint", function()
+        print("linting")
+        require("lint").try_lint()
+      end, {})
+
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          print("linting")
+          require("lint").try_lint()
+        end,
       })
     end
   },
   { 'itchyny/vim-qfedit',  ft = 'qf' },
+  { 'stevearc/oil.nvim',   config = function() require('oil').setup() end },
+  {
+    'rmagatti/auto-session',
+    lazy = false,
+    opts = {
+      suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
+    }
+  },
   {
     'ThePrimeagen/harpoon',
     dependencies = { 'nvim-lua/plenary.nvim' },
@@ -358,8 +327,9 @@ require("lsroa.lsp")
 vim.diagnostic.config({
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = '',
-      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.ERROR] = '×',
+      [vim.diagnostic.severity.WARN] = '‣',
+      [vim.diagnostic.severity.HINT] = '•',
     },
     linehl = {
       [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
