@@ -99,6 +99,14 @@ vim.api.nvim_create_user_command("CopyPath", function()
   vim.fn.setreg("+", path)
 end, {})
 
+vim.api.nvim_create_user_command("CopyRelativePath", function()
+  local relative = vim.fn.expand("%:r")
+  local ext = vim.fn.expand("%:e")
+  local path = relative .. "." .. ext
+
+  vim.fn.setreg("+", "@" .. path)
+end, {})
+
 
 vim.api.nvim_create_user_command("OpenPyCharm", function()
   local path = vim.fn.expand("%:p")
