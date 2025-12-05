@@ -1,92 +1,62 @@
-vim.lsp.util.apply_text_document_edit = function(text_document_edit, index, offset_encoding)
-  local text_document = text_document_edit.textDocument
-  local bufnr = vim.uri_to_bufnr(text_document.uri)
-  if offset_encoding == nil then
-    vim.notify_once('apply_text_document_edit must be called with valid offset encoding', vim.log.levels.WARN)
-  end
-
-  vim.lsp.util.apply_text_edits(text_document_edit.edits, bufnr, offset_encoding)
-end
-
-local M = {}
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-M.capabilities = capabilities
-
-
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 -- Formatting
-local lsp_formatting = function(bufnr)
-  vim.lsp.buf.format({
-    filter = function(client) return client.name ~= "tsserver" end,
-    bufnr = bufnr,
-    -- async = true,
-  })
-end
-
-local on_attach = function(client, bufnr)
-  if client.supports_method('textDocument/formatting') then
+local add_autocmd_lsp_formatting = function(bufnr, client)
+  if client:supports_method('textDocument/formatting') then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
       buffer = bufnr,
       callback = function()
-        lsp_formatting(bufnr)
+        vim.lsp.buf.format({
+          filter = function(client) return client.name ~= "tsserver" end,
+          bufnr = bufnr,
+        })
       end
     })
   end
-
-  local opts = { noremap = true, silent = true }
-
-  vim.keymap.set('n', '<Leader>k', function() vim.lsp.buf.hover() end, opts)
-  vim.keymap.set('n', '<Leader>rn', function() vim.lsp.buf.rename() end, opts)
-  vim.keymap.set('n', '<Leader>e', function() vim.diagnostic.open_float() end, opts)
-  vim.keymap.set('n', 'gi', function() vim.lsp.buf.implementation() end, opts)
-  vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev() end, opts)
-  vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next() end, opts)
-  vim.keymap.set('n', '<Leader>a', function() vim.lsp.buf.code_action() end, opts)
-  vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
-  vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
-  vim.keymap.set('n', 'gD', function() vim.lsp.buf.type_definition() end, opts)
-  vim.keymap.set('n', '<Leader>rf', function() vim.lsp.buf.references() end, opts)
 end
 
-M.on_attach = on_attach
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local opts = { noremap = true, silent = true }
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local bufnr = ev.data.buf
+
+    vim.keymap.set('n', '<Leader>k', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<Leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, opts)
+    if client.name ~= "basedpyright" then
+      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    end
+    vim.keymap.set('n', '[e', function() vim.diagnostic.jump({ count = -1 }) end, opts)
+    vim.keymap.set('n', ']e', function() vim.diagnostic.jump({ count = 1 }) end, opts)
+    vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<Leader>rf', vim.lsp.buf.references, opts)
+
+    add_autocmd_lsp_formatting(bufnr, client)
+  end
+})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 
 local servers = {
-  gopls = {},
-  -- gdscript = {},
-  eslint = {
-    settings = {
-      experimental = { useFlatConfig = false },
+  eslint = {},
+  tailwincss = {},
+  ruff = {
+    init_options = {
+      configuration = os.getenv("HOME") .. "/.ruff.toml",
     },
-    on_attach = function(_, bufnr)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        command = "EslintFixAll",
-      })
-    end
   },
-  basedpyright = {
-    settings = {
-      basedpyright = {
-        analysis = {
-          typeCheckingMode = "strict",
-          useLibraryCodeForTypes = true,
-          extraPaths = {
-            "./src",
-            vim.fn.getcwd() .. "/venv/lib/python3.10/site-packages/django-types",
-          }
-        }
-      }
-    }
-  },
-  prismals = {},
-  glsl_analyzer = {},
+  cssls = {},
+  angularls = {},
+  pyrefly = {},
   clangd = {
     cmd = {
       "clangd",
@@ -121,30 +91,20 @@ local servers = {
     }
   },
   ts_ls = {
-    inlayHints = {
-      includeInlayParameterNameHints = 'all',
-      includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-      includeInlayFunctionParameterTypeHints = true,
-      includeInlayVariableTypeHints = true,
-      includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-      includeInlayPropertyDeclarationTypeHints = true,
-      includeInlayFunctionLikeReturnTypeHints = true,
-      includeInlayEnumMemberValueHints = true,
-    },
     init_options = {
       preferences = {
         disableSuggestions = true,
+        importModuleSpecifierPreference = 'non-relative',
       }
     },
     commands = {
       OrganizeImports = {
         function()
-          local params = {
+          vim.lsp.buf.execute_command({
             command = "_typescript.organizeImports",
             arguments = { vim.api.nvim_buf_get_name(0) },
-            title = ""
-          }
-          vim.lsp.buf.execute_command(params)
+            title = "Organize imports",
+          })
         end
       }
     }
@@ -152,13 +112,10 @@ local servers = {
 }
 
 require 'mason'.setup()
-require 'mason-lspconfig'.setup()
 
 for lsp, config in pairs(servers) do
-  config.on_attach = on_attach
   config.capabilities = capabilities
 
-  require 'lspconfig'[lsp].setup(config)
+  vim.lsp.enable(lsp)
+  vim.lsp.config(lsp, config)
 end
-
-return M
