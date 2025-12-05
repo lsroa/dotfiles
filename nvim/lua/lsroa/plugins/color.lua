@@ -59,6 +59,9 @@ return {
         DiffDelete = {
           bg = '#875f5f'
         },
+        GitSignsDeleteVirtLn = {
+          link = "DiffDelete"
+        },
         DiffText = {
           bg = '#007f7f',
         },
@@ -119,11 +122,22 @@ return {
             'bold'
           }
         },
+        MiniCursorwordCurrent = {
+          bg = '#45475a',
+          style = {
+            'bold'
+          }
+        },
+        MiniCursorword = {
+          bg = '#45475a',
+          style = {
+            'bold'
+          }
+        },
       },
       term_colors = true,
       transparent_background = true,
       integrations = {
-        neotree = false,
         gitsigns = true,
         dap = true,
         treesitter = true,
@@ -142,8 +156,8 @@ return {
     })
 
     vim.cmd([[
-			set termguicolors
-			colorscheme catppuccin
-		]])
+      set termguicolors
+      colorscheme catppuccin
+    ]])
   end
 }
