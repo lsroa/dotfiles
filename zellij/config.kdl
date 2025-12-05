@@ -1,20 +1,12 @@
-
 keybinds clear-defaults=true {
     locked {
-        bind "Ctrl g" {
-            SwitchToMode "Normal";
-        }
+        bind "Ctrl g" { SwitchToMode "normal"; }
     }
     pane {
         bind "c" { SwitchToMode "renamepane"; PaneNameInput 0; }
         bind "d" { NewPane "down"; SwitchToMode "normal"; }
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "normal"; }
         bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
-        // bind "h" { MoveFocus "left"; }
-        // bind "i" { TogglePanePinned; SwitchToMode "normal"; }
-        // bind "j" { MoveFocus "down"; }
-        // bind "k" { MoveFocus "up"; }
-        // bind "l" { MoveFocus "right"; }
         bind "n" { NewPane; SwitchToMode "normal"; }
         bind "p" { SwitchFocus; }
         bind "r" { NewPane "right"; SwitchToMode "normal"; }
@@ -22,6 +14,8 @@ keybinds clear-defaults=true {
         bind "z" { TogglePaneFrames; SwitchToMode "normal"; }
     }
     tab {
+        bind "left" { MoveTab "left"; }
+        bind "right" { MoveTab "right"; }
         bind "1" { GoToTab 1; SwitchToMode "normal"; }
         bind "2" { GoToTab 2; SwitchToMode "normal"; }
         bind "3" { GoToTab 3; SwitchToMode "normal"; }
@@ -44,12 +38,6 @@ keybinds clear-defaults=true {
         bind "Ctrl t" { SwitchToMode "normal"; }
         bind "x" { CloseTab; SwitchToMode "normal"; }
         bind "tab" { ToggleTab; }
-    }
-    resize {
-        bind "h" { Resize "Increase left"; }
-        bind "j" { Resize "Increase down"; }
-        bind "k" { Resize "Increase up"; }
-        bind "l" { Resize "Increase right"; }
     }
     move {
         bind "h" { MovePane "left"; }
@@ -108,18 +96,14 @@ keybinds clear-defaults=true {
         }
     }
     shared_except "locked" {
+        bind "F2" { GoToPreviousTab; }
+        bind "F3" { GoToNextTab; }
         bind "Alt +" { Resize "Increase"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
-        bind "F2" { GoToPreviousTab; }
-        bind "F3" { GoToNextTab; }
-        // bind "Alt f" { ToggleFloatingPanes; }
         bind "Ctrl g" { SwitchToMode "locked"; }
-        // bind "Alt i" { MoveTab "left"; }
-        // bind "Alt n" { NewPane; }
-        // bind "Alt o" { MoveTab "right"; }
         bind "Ctrl x" { Quit; }
     }
     shared_except "locked" "move" {
@@ -146,14 +130,17 @@ keybinds clear-defaults=true {
     shared_except "locked" "pane" {
         bind "Alt p" { SwitchToMode "pane"; }
     }
-    shared_except "locked" "resize" {
-        // bind "Ctrl n" { SwitchToMode "resize"; }
-    }
     shared_except "normal" "locked" "entersearch" {
         bind "enter" { SwitchToMode "normal"; }
     }
     shared_except "normal" "locked" "entersearch" "renametab" "renamepane" {
         bind "esc" { SwitchToMode "normal"; }
+    }
+    shared_among "resize" "tmux" {
+        bind "h" { Resize "Increase left"; }
+        bind "j" { Resize "Increase down"; }
+        bind "k" { Resize "Increase up"; }
+        bind "l" { Resize "Increase right"; }
     }
     shared_among "pane" "tmux" {
         bind "x" { CloseFocus; SwitchToMode "normal"; }
@@ -199,10 +186,6 @@ keybinds clear-defaults=true {
         bind "[" { SwitchToMode "scroll"; }
         bind "Ctrl b" { Write 2; SwitchToMode "normal"; }
         bind "c" { NewTab; SwitchToMode "normal"; }
-        bind "h" { Resize "Increase left"; }
-        bind "j" { Resize "Increase down"; }
-        bind "k" { Resize "Increase up"; }
-        bind "l" { Resize "Increase right"; }
         bind "z" { ToggleFocusFullscreen; SwitchToMode "normal"; }
     }
 }
@@ -218,7 +201,7 @@ plugins {
     }
     plugin-manager location="zellij:plugin-manager"
     session-manager location="zellij:session-manager"
-    // status-bar location="zellij:status-bar"
+    status-bar location="zellij:status-bar"
     strider location="zellij:strider"
     tab-bar location="zellij:tab-bar"
     welcome-screen location="zellij:session-manager" {
@@ -229,7 +212,8 @@ plugins {
 // Plugins to load in the background when a new session starts
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
-load_plugins {}
+load_plugins {
+}
  
 // Use a simplified UI without special fonts (arrow glyphs)
 // Options:
@@ -322,9 +306,9 @@ default_layout "compact"
 //
 // copy_command "xclip -selection clipboard" // x11
 // copy_command "wl-copy"                    // wayland
-copy_command "pbcopy"
+// copy_command "pbcopy"                     // osx
 // 
-// copy_command "pbcopy"
+copy_command "pbcopy"
  
 // Choose the destination for copied text
 // Allows using the primary selection buffer (on x11/wayland) instead of the system clipboard.
@@ -369,7 +353,7 @@ copy_on_select true
 //   - true (default)
 //   - false
 // 
-// session_serialization false
+session_serialization false
  
 // Whether pane viewports are serialized along with the session, default is false
 // Options:
@@ -416,7 +400,7 @@ copy_on_select true
 // Whether to show tips on startup
 // Default: true
 // 
-// show_startup_tips false
+show_startup_tips false
  
 // Whether to show release notes on first version run
 // Default: true
