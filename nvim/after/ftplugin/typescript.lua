@@ -10,6 +10,7 @@ vim.keymap.set('n', '<Leader>tt', function()
     file_path .. '/__tests__/' .. file_name .. ".test.tsx",
     file_path .. '/' .. file_name .. ".test.ts",
     file_path .. '/' .. file_name .. ".test.tsx",
+    file_path .. '/' .. file_name .. ".spec.ts",
     file_path .. '/__test__/' .. file_name .. ".spec.tsx",
     file_path .. '/__test__/' .. file_name .. ".spec.ts",
   } do
@@ -44,18 +45,12 @@ local run_npm_script = function()
     end
 
     local file_path = tostring(vim.fn.expand("%:p"))
-    if vim.fn.winwidth(0) < 150 then
-      vim.cmd("split")
-    else
-      vim.cmd("vsplit")
-    end
-    vim.cmd("terminal" .. " npm run " .. choice .. " " .. file_path)
+    local direction = vim.fn.winwidth(0) > 150 and "right" or "down"
+    local npm_script = { "zellij", "run", "--name", choice, "--direction", direction, "--",
+      "npm", "run", choice, file_path
+    }
+    vim.system(npm_script)
   end)
 end
 
 vim.keymap.set('n', '<Leader>x', run_npm_script, opts)
-
-vim.keymap.set('n', '<Leader>tw', function()
-  local file_path = vim.fn.expand("%:p")
-  os.execute("tmux split-window -h " .. "npx jest --watch " .. file_path)
-end, opts)
