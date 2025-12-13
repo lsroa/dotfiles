@@ -1,30 +1,5 @@
 vim.g.mapleader = ' '
 
--- Disable some builtin vim plugins
-local disabled_built_ins = {
-  "2html_plugin",
-  "getscript",
-  "getscriptPlugin",
-  "gzip",
-  "logipat",
-  "netrw",
-  "netrwPlugin",
-  "netrwSettings",
-  "netrwFileHandlers",
-  "matchit",
-  "tar",
-  "tarPlugin",
-  "rrhelper",
-  "vimball",
-  "vimballPlugin",
-  "zip",
-  "zipPlugin",
-}
-
-for _, plugin in pairs(disabled_built_ins) do
-  vim.g["loaded_" .. plugin] = 1
-end
-
 -- Yanked highlight
 local yank_group = vim.api.nvim_create_augroup('HighlightYank', {})
 
@@ -164,10 +139,16 @@ require('lazy').setup({
             ["gs"] = { "actions.change_sort", mode = "n" },
             ["gx"] = "actions.open_external",
             ["g."] = { "actions.toggle_hidden", mode = "n" },
-            ["g\\"] = { "actions.toggle_trash", mode = "n" },
           },
+          float = {
+            gen_win_title = function() return vim.fn.expand("%:p:h") end,
+            max_width = vim.fn.winwidth(0) < 150 and 0.5 or 0.45,
+            max_height = 0.5,
+            border = "rounded",
+          }
         }
       )
+      vim.keymap.set("n", "<Leader>o", ":Oil --float . <CR>", { noremap = true, silent = true })
     end
   },
   {
