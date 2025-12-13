@@ -99,7 +99,6 @@ require('lazy').setup({
   },
   {
     'mfussenegger/nvim-lint',
-    enabled = false,
     config = function()
       require("lint").linters_by_ft = {
         html = { "htmlhint" },
@@ -117,7 +116,8 @@ require('lazy').setup({
           require("lint").try_lint()
         end,
       })
-    end
+    end,
+    ft = { "html", "scss" }
   },
   { 'itchyny/vim-qfedit',  ft = 'qf' },
   {
@@ -148,20 +148,32 @@ require('lazy').setup({
           }
         }
       )
-      vim.keymap.set("n", "<Leader>o", ":Oil --float . <CR>", { noremap = true, silent = true })
+
+      vim.keymap.set("n", "<Leader>o",
+        function()
+          require("oil").open_float(vim.fn.expand("%:p:h"), { pickers = "files" })
+        end,
+        { noremap = true, silent = true }
+      )
     end
-  },
-  {
-    "ibhagwan/fzf-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {}
   },
   {
     'rmagatti/auto-session',
     lazy = false,
     opts = {
       suppressed_dirs = { '~/', '~/Projects', '~/Downloads', '/' },
-    }
+    },
+    config = function()
+      require('auto-session').setup({})
+    end
+  },
+  {
+    'nvim-mini/mini.nvim',
+    version = false,
+    config =
+        function()
+          require('mini.cursorword').setup()
+        end
   },
   {
     'ThePrimeagen/harpoon',
