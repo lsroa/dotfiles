@@ -107,6 +107,8 @@ vim.api.nvim_create_user_command("CopyRelativePath", function()
   vim.fn.setreg("+", "@" .. path)
 end, {})
 
+vim.keymap.set("n", "<Leader>@", ":CopyRelativePath<CR>", { noremap = true })
+
 
 vim.api.nvim_create_user_command("OpenPyCharm", function()
   local path = vim.fn.expand("%:p")
