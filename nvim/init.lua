@@ -103,6 +103,7 @@ require('lazy').setup({
       require("lint").linters_by_ft = {
         html = { "htmlhint" },
         scss = { "stylelint" },
+        python = { "flake8" }
       }
 
       vim.api.nvim_create_user_command("Lint", function()
@@ -117,7 +118,7 @@ require('lazy').setup({
         end,
       })
     end,
-    ft = { "html", "scss" }
+    ft = { "html", "scss", "python" }
   },
   { 'itchyny/vim-qfedit',  ft = 'qf' },
   {
